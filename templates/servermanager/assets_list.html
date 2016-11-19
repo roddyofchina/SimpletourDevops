@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<link href="/static/assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<link href="/static/assets/plugins/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" type="text/css">
+
+
+
+<div class="container">
+   <!-- Page-Title -->
+    <div class="row ">
+            <div class="col-sm-12">
+                <h4 class="page-title">资产列表</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">资产管理</a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'AssetsLists' 1 %}">资产列表</a>
+                    </li>
+                </ol>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card-box">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="m-t-0 header-title"><b>Simpletour资产列表</b></h4>
+                                <p class="text-muted font-13">
+                                    资产详细情况请点击资产ID
+                                </p>
+                            </div>
+                            <div>
+                                <div class="col-sm-8">
+                                </div>
+                                <div class="col-sm-4">
+                                    <form method="post" action="{% url 'AssetsLists' 1 %}">
+                                        {% csrf_token  %}
+                                        <div class="input-group">
+                                            <input type="text" id="search" name="search" class="form-control" placeholder="输入资产编号或设备名">
+                                            <span class="input-group-btn">
+                                            <button type="submit" class="btn waves-effect waves-light btn-primary"  ><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                 </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <br>
+                                <div class="bootstrap-table">
+                                    <div class="table-responsive">
+                                        <table class="table-bordered" data-page-size="5" data-toggle="table" >
+                                            <thead>
+                                                <tr>
+                                                    <th>资产编号</th>
+                                                    <th>设备名</th>
+                                                    <th>IDC</th>
+                                                    <th>设备类型</th>
+                                                    <th>业务名</th>
+                                                    <th>设备状态</th>
+                                                    <th data-sortable="true">资产价格(￥)</th>
+                                                    <th>购买时间</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            {% for asset in Assetsdata %}
+                                                <tr>
+                                                    <td><a href="{% url 'AssetsDetail' asset.id %}">{{asset.device_number}}</a></td>
+                                                    <td>{{asset.host_name}}</td>
+                                                    <td>{{asset.IDC}}</td>
+                                                    <td>{{asset.device_type}}</td>
+                                                    <td>{{asset.business}}</td>
+                                                    {% for i in asset.status_choice %}
+                                                        {% if asset.status == i.0 %}
+                                                                <td>{{i.1}}</td>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                                    <td>{{asset.price}}</td>
+                                                    <td>{{asset.buy_time}}</td>
+
+                                                    <td>
+                                                        <button  class="btn btn-xs btn-primary" onclick="Assets_delete({{asset.id}})">删除</button>
+                                                        <a  href="{% url 'ChangeAsset' asset.id %}" class="btn btn-xs btn-info">修改</a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    <div class="row">
+                        <nav>
+                        <ul class="pagination" >
+                            {{page}}
+                        </ul>
+                        </nav>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    function Assets_delete(assetid){
+        $.ajax({
+            method: "GET",
+            url:"/server/assets/delete/" + assetid,
+            dataType: 'json',
+            success:function(result){
+                var msginfo=result.msginfo;
+                var msgerror=result.msgerror;
+                if(msginfo){
+                    $.Notification.autoHideNotify('success','top right','系统通知', msginfo);
+                    setTimeout(function() {
+                          location.href = '{% url 'AssetsLists' 1 %}';
+                     },2500);
+
+                }else{
+                    $.Notification.autoHideNotify('error', 'top right', '系统通知',msgerror);
+
+                }
+
+            },
+            error:function(e){
+                alert(e);
+
+            }
+
+        });
+    }
+
+
+    function search(){
+        var searchdata = document.getElementById("search").value;
+        $.ajax({
+            method:'POST',
+            url:"{% url 'AssetsLists' 1 %}",
+            dataType: 'json',
+            data:{
+               searchdata:searchdata,
+               csrfmiddlewaretoken:'{{ csrf_token  }}',
+            },
+            success:function(result){
+                location.reload();
+            },
+            error:function(){
+            }
+        });
+    }
+
+
+</script>
+
+
+{% endblock %}

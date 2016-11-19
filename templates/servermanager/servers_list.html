@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<link href="/static/assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<link href="/static/assets/plugins/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" type="text/css">
+<style>
+    .glyphicon.glyphicon-repeat{
+        visibility: hidden;
+        -moz-animation:rotate 1s infinite linear;
+        -webkit-animation:rotate 1s infinite linear;
+        animation:rotate 1s infinite linear;
+    }
+    @-moz-keyframes rotate{
+        0%{
+          -moz-transform:rotate(0deg);
+         }
+         100%{
+           -moz-transform:rotate(360deg);
+         }
+      }
+      @-webkit-keyframes rotate{
+        0%{
+          -webkit-transform:rotate(0deg);
+         }
+         100%{
+           -webkit-transform:rotate(360deg);
+         }
+      }
+      @keyframes rotate{
+        0%{
+          transform:rotate(0deg);
+         }
+         100%{
+           transform:rotate(360deg);
+         }
+      }
+</style>
+
+
+<div class="container">
+   <!-- Page-Title -->
+    <div class="row ">
+            <div class="col-sm-12">
+                <h4 class="page-title">服务器列表</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">资产管理</a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'ServerList' 1 %}">服务器列表</a>
+                    </li>
+                </ol>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card-box">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="m-t-0 header-title"><b>Simpletour服务器列表</b></h4>
+                                <p class="text-muted font-13">
+                                    服务器详细情况请点击主机SN号
+                                </p>
+                            </div>
+
+                                <div>
+                                <div class="col-sm-8">
+                                </div>
+                                <div class="col-sm-4">
+                                    <form method="post" action="{% url 'ServerList' 1 %}">
+                                        {% csrf_token  %}
+                                        <div class="input-group">
+                                            <input type="text" id="search" name="search" class="form-control" placeholder="输入SN编号\设备名\主机名">
+                                            <span class="input-group-btn">
+                                            <button type="submit" class="btn waves-effect waves-light btn-primary"  ><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                 </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <br>
+
+                                <div class="bootstrap-table">
+                                    <div class="table-responsive">
+                                        <table class="table-bordered" data-page-size="5" data-toggle="table" >
+                                            <thead>
+                                                <tr>
+                                                    <th>服务器SN</th>
+                                                    <th>设备名</th>
+                                                    <th>主机名</th>
+                                                    <th>IDC</th>
+                                                    <th>CPU核数</th>
+                                                    <th>IP列表</th>
+                                                    <th>购买价格</th>
+                                                    <th>硬盘</th>
+                                                    <th>网卡个数</th>
+                                                    <th>添加方式</th>
+                                                    <th>最近更新</th>
+                                                    <th>操 作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tb1">
+
+                                            {% for server in Serverdata %}
+                                                <tr>
+                                                    <td class="sn"><a href="{% url 'ServerDetail' server.id %}">{{server.sn}}</a></td>
+                                                    <td>{{server.Assets.host_name}}</td>
+                                                    <td class="hostName">{{server.hostname}}</td>
+                                                    <td>{{server.Assets.IDC}}</td>
+                                                    <td class="cpu">{{server.cpu_core_count}}</td>
+                                                    <td class="nic">{%for i in server.nic.all%}
+                                                            {{i.ip}}<br>
+                                                        {%endfor%}
+                                                    </td>
+
+                                                    <td>{{server.Assets.price}}</td>
+                                                    <td class="disk">
+                                                    {% for i in server.disk.all %}
+                                                            {{i.name}}
+                                                    {%endfor%}
+
+                                                    </td>
+                                                    <td>
+                                                        {{server.nic.count}}
+                                                    </td>
+
+                                                    {% for i in server.add_type_choice %}
+                                                        {% if server.addtype == i.0 %}
+                                                                <td>{{i.1}}</td>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                                    <td class="updateTime">{{server.update_time|date:'Y-m-d H:i'}}</td>
+                                                    <td>
+                                                        <a href="{% url 'DeleteServer' server.id %}" class="btn btn-xs btn-primary">删除</a>
+                                                        <a href="{% url 'ChangeServer' server.id %}" class="btn btn-xs btn-info">修改</a>
+                                                        <button  class="btn btn-xs btn-danger" data-id="{{server.id}}">资产更新</button>
+                                                        <i class="glyphicon glyphicon-repeat"></i>
+                                                    </td>
+                                                </tr>
+                                            {% endfor%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="row">
+                        <nav>
+                        <ul class="pagination" >
+                            {{page}}
+                        </ul>
+                        </nav>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<script>
+    var timer,$btn;
+    $('.bootstrap-table').on('click','.btn.btn-xs',function(e) {
+        $btn = $(this);
+        if($btn.hasClass('disabled')) return;
+        var serverId = $btn.attr('data-id');
+        $.ajax({
+            url:'/server/servers/update/' + serverId,
+            beforeSend: function() {
+                $btn.addClass('disabled');
+                $btn.next('.glyphicon').css('visibility','visible');
+            },
+            method:'GET',
+            dataType: 'json',
+            success:function(data){
+                var celeryId = data.celeryId;
+                timer = setInterval(function() {
+                    callback_status(celeryId);
+                },1000);
+            },
+            error:function(){
+                $btn.next('.glyphicon').css('visibility','hidden');
+                $btn.removeClass('disabled');
+            }
+        });
+
+    });
+
+    var update_info = function(result) {
+        $btn.parents('tr').find('.sn a').text(result.sn);
+        $btn.parents('tr').find('.hostName').text(result.hostname);
+        $btn.parents('tr').find('.cpu').text(result.cpu);
+
+        var nicHtml = "";
+        for(var i = 0; i < result.nic.length; i++) {
+            if((i + 1) == result.nic.length) {
+                nicHtml += result.nic[i]
+            } else {
+                nicHtml += result.nic[i] + '<br/>';
+            }
+        };
+        $btn.parents('tr').find('.nic').html(nicHtml);
+
+        var diskHtml = "";
+        for(var j = 0; j < result.disk.length; j++) {
+            if((j + 1) == result.disk.length) {
+                diskHtml += result.disk[j]
+            } else {
+                diskHtml += result.disk[j] + '<br>';
+            }
+        };
+        $btn.parents('tr').find('.disk').html(diskHtml);
+        $btn.parents('tr').find('.updateTime').text(result.last_update);
+
+    }
+
+    var callback_status = function(celeryId) {
+        $.ajax({
+            url:'/server/servers/task/' + celeryId,
+            method:'GET',
+            dataType: 'json',
+            success:function(data){
+                if(data.state == 'SUCCESS') {
+                    clearInterval(timer);
+                    update_info(data.result);
+                    $.Notification.autoHideNotify('success','top right','系统通知', '资产状态已更新!!!!');
+                    $btn.next('.glyphicon').css('visibility','hidden');
+                    $btn.removeClass('disabled');
+
+                } else if(data.state == 'FAILURE') {
+                    clearInterval(timer);
+                    $.Notification.autoHideNotify('error', 'top right', '系统通知',"资产更新失败!!!");
+                    console.log(data.status);
+                    $btn.next('.glyphicon').css('visibility','hidden');
+                    $btn.removeClass('disabled');
+                };
+            },
+            error:function(){
+
+            },
+        });
+    };
+</script>
+
+
+{% endblock %}

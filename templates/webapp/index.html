@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+        <!-- Page-Title -->
+        <div class="row">
+          <div class="col-sm-12">
+            <h4 class="page-title">系统首页</h4>
+            <p class="text-muted page-title-alt">欢迎进入SimpletourDevops运维系统!</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-3">
+            <div class="widget-bg-color-icon card-box fadeInDown animated">
+              <div class="bg-icon bg-icon-info pull-left"> <i class="md md-attach-money text-info"></i> </div>
+              <div class="text-right">
+                <h3 class="text-dark"><b class="counter">{{priceData.price__sum}}</b></h3>
+                <p class="text-muted">资产总价</p>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="widget-bg-color-icon card-box">
+              <div class="bg-icon bg-icon-pink pull-left"> <i class="md  md-view-headline text-pink"></i> </div>
+              <div class="text-right">
+                <h3 class="text-dark"><b class="counter">{{ServersCount}}</b></h3>
+                <p class="text-muted">服务器统计</p>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="widget-bg-color-icon card-box">
+              <div class="bg-icon bg-icon-purple pull-left"> <i class="md  md-view-module text-purple"></i> </div>
+              <div class="text-right">
+                <h3 class="text-dark"><b class="counter">{{DockerContainerCount}}</b></h3>
+                <p class="text-muted">容器统计</p>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="widget-bg-color-icon card-box">
+              <div class="bg-icon bg-icon-success pull-left"> <i class="md md-remove-red-eye text-success"></i> </div>
+              <div class="text-right">
+                <h3 class="text-dark"><b class="counter">{{DockerImageCount}}</b></h3>
+                <p class="text-muted">镜像统计</p>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8">
+           <div class="portlet">
+              <div class="portlet-heading portlet-default">
+                      <h3 class="portlet-title text-dark">
+                          用户最近执行操作
+                      </h3>
+                      <div class="portlet-widgets">
+                          <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                          <span class="divider"></span>
+                          <a data-toggle="collapse" data-parent="#accordion1" href="#bg-default"><i class="ion-minus-round"></i></a>
+                          <span class="divider"></span>
+                          <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                      </div>
+                      <div class="clearfix"></div>
+                  </div>
+
+              <div class="portlet-body">
+                  <table class="table table-striped m-0">
+                      <thead>
+                          <tr>
+                              <th>#</th>
+                              <th>执行人</th>
+                              <th>时间</th>
+                              <th>操作</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in Opdata%}
+                          <tr>
+                              <th scope="row">{{i.id}}</th>
+                              <td>{{i.Opuser}}</td>
+                              <td>{{i.Optime|date:"Y-m-d H:i:s"}}</td>
+                              <td>{{i.Opaction}}</td>
+                          </tr>
+                        {%endfor%}
+                      </tbody>
+                  </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+              <div class="portlet">
+                  <div class="portlet-heading portlet-default">
+                      <h3 class="portlet-title text-dark">
+                          用户基本信息
+                      </h3>
+                      <div class="portlet-widgets">
+                          <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                          <span class="divider"></span>
+                          <a data-toggle="collapse" data-parent="#accordion1" href="#bg-default"><i class="ion-minus-round"></i></a>
+                          <span class="divider"></span>
+                          <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                      </div>
+                      <div class="clearfix"></div>
+                  </div>
+                  <div class="portlet-body">
+                        <div>
+                            <div class="text-left">
+                                <table class="table">
+                                    <tbody><tr>
+                                        <td class="text-navy">ID</td>
+                                        <td>{{UserData.id}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">用户名</td>
+                                        <td>{{UserData.username}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">姓名</td>
+                                        <td>{{UserData.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">邮箱</td>
+                                        <td>{{UserData.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">QQ</td>
+
+                                        <td>{{UserData.QQ}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">联系方式</td>
+                                        <td>{{UserData.phone}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">激活</td>
+                                        {% if UserData.is_active %}
+                                            <td class="glyphicon glyphicon-ok"></td>
+                                        {% else%}
+                                            <td class="glyphicon glyphicon-remove"></td>
+                                        {%endif%}
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">添加日期</td>
+                                        <td>{{UserData.date_joined|date:"Y-m-d H:i:s"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">最后登录</td>
+                                        <td>{{UserData.last_login|date:"Y-m-d H:i:s"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">所在用户组</td>
+                                        <td>
+                                             <table class="table">
+                                                 {% for g in UserData.groups.all %}
+                                                    <tr>
+                                                        <td>{{g}}</td>
+                                                    </tr>
+                                                 {% endfor %}
+                                             </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-navy">部门</td>
+                                        <td>{{UserData.department.name}}</td>
+                                    </tr>
+
+                                </tbody></table>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <!-- end row -->
+
+
+      </div>
+
+
+{% endblock %}
+

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<link href="/static/assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<link href="/static/assets/plugins/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" type="text/css">
+
+
+<div class="container">
+   <!-- Page-Title -->
+    <div class="row ">
+            <div class="col-sm-12">
+                <h4 class="page-title">镜像列表</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">镜像管理</a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'DockerImages' 1 %}">镜像列表</a>
+                    </li>
+                </ol>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card-box">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="m-t-0 header-title"><b>Simpletour镜像列表</b></h4>
+                                <br>
+                                <div class="bootstrap-table">
+                                    <div class="table-responsive">
+                                        <table class="table-bordered" data-page-size="5" data-toggle="table" >
+                                            <thead>
+                                                <tr>
+
+                                                    <th>镜像ID</th>
+                                                    <th>镜像名</th>
+                                                    <th>版本tag</th>
+                                                    <th>宿主机</th>
+                                                    <th>镜像大小</th>
+                                                    <th>操 作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            {% for image in Imagedata %}
+                                                <tr>
+
+                                                    <td>{{image.imagesId | slice:"12"}}</td>
+                                                    <td>{{image.repository}}</td>
+                                                    <td>{{image.tag}}</td>
+                                                    <td>{{image.imagehost}}</td>
+                                                    <td>{{image.size}}</td>
+                                                    <td>
+                                                        <a href="{% url 'DockerImageDelete' image.id %}" class="btn btn-xs btn-danger">删除</a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor%}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="row">
+                        <nav>
+                        <ul class="pagination" >
+                            {{page}}
+                        </ul>
+                        </nav>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+<div class="row">
+
+
+
+     <div class="col-sm-12">
+                <h4 class="page-title">资产列表</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">资产管理</a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'AssetsDetail' Assetsdata.id  %}">资产详情</a>
+                    </li>
+                </ol>
+            </div>
+             <div class="col-sm-10">
+                <div class="card-box">
+                    <h4 class="m-t-0 header-title"><b>资产详情:</b></h4>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-10">
+                                <div >
+                                    <label class="col-md-2 control-label">资产编号</label>
+                                    <div class="col-md-4">
+                                        <p>{{Assetsdata.device_number}}</p>
+                                    </div>
+                                </div>
+                                <div >
+                                    <label class="col-md-2 control-label" >设备名</label>
+                                    <div class="col-md-4">
+                                         <p>{{Assetsdata.host_name}}</p>
+                                    </div>
+                                </div>
+                                <div >
+                                    <label class="col-md-2 control-label">IDC</label>
+                                    <div class="col-md-4">
+                                        <p>{{Assetsdata.IDC}}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="col-md-2 control-label">设备类型</label>
+                                    <div class="col-md-4">
+                                        <p>{{Assetsdata.device_type}}</p>
+                                    </div>
+                                </div>
+                                <div >
+                                    <label class="col-md-2 control-label">业务名</label>
+                                    <div class="col-md-4">
+                                        <p>{{Assetsdata.business}}</p>
+                                    </div>
+                                </div>
+                                <div >
+                                    <label class="col-md-2 control-label">设备状态</label>
+                                    <div class="col-md-4">
+                                        <p>{{Assetsdata.buy_type}}</p>
+                                    </div>
+                                </div>
+                                <div >
+                                    <label class="col-md-2 control-label">资产价格</label>
+                                    <div class="col-md-4">
+                                         <p>{{Assetsdata.price}}</p>
+                                    </div>
+                                </div>
+                                <div >
+                                    <label class="col-md-2 control-label">购买时间</label>
+                                    <div class="col-md-4">
+                                        <p>{{Assetsdata.buy_time}}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="col-md-2 control-label">保修期(月)</label>
+                                    <div class="col-md-4">
+                                        <p>{{Assetsdata.Warranty}}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="col-md-2 control-label">开始使用时间</label>
+                                    <div class="col-md-4">
+
+                                        <p>{{Assetsdata.suse_time | date:"Y-m-d"}}</p>
+                                    </div>
+                                </div>
+                               <div>
+                                    <label class="col-md-2 control-label">截至使用时间</label>
+                                    <div class="col-md-4">
+                                        <p>{{Assetsdata.euse_time | date:"Y-m-d"}}</p>
+                                    </div>
+                                </div>
+
+                                 <div >
+                                    <label class="col-md-2 control-label">资产备注</label>
+                                    <div class="col-md-4">
+                                        <p>{{Assetsdata.description}}</p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+
+{% endblock %}

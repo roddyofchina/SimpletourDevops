@@ -1,0 +1,48 @@
+
+.state_color_510 {
+    background-color: #90EE90;
+    border-radius: 4px;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+    text-align: center;
+    width: 50px;
+}
+.state_color_510:first-child {
+}
+.state_color_600 {
+    background-color: #f89406;
+    border-radius: 4px;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 23px;
+    text-align: center;
+    width: 50px;
+}
+.state_color_600:first-child {
+}
+.state_color_610 {
+    background-color: #bd362f;
+    border-radius: 4px;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+    text-align: center;
+    width: 50px;
+}
+.state_color_710 {
+    color: #bd362f;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 11px;
+    text-align: center;
+}
+.state_710 {
+    text-align: center;
+}

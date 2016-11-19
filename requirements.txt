@@ -1,0 +1,7 @@
+django==1.9.9
+django-import-export==0.5.1
+itsdangerous==0.24
+celery
+https://github.com/darklow/django-suit/tarball/v2-vertical
+
+

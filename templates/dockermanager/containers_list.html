@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<link href="/static/assets/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<link href="/static/assets/plugins/bootstrap-table/dist/bootstrap-table.min.css" rel="stylesheet" type="text/css">
+
+
+<style>
+    .glyphicon.glyphicon-repeat{
+        visibility: hidden;
+        -moz-animation:rotate 1s infinite linear;
+        -webkit-animation:rotate 1s infinite linear;
+        animation:rotate 1s infinite linear;
+    }
+    @-moz-keyframes rotate{
+        0%{
+          -moz-transform:rotate(0deg);
+         }
+         100%{
+           -moz-transform:rotate(360deg);
+         }
+      }
+      @-webkit-keyframes rotate{
+        0%{
+          -webkit-transform:rotate(0deg);
+         }
+         100%{
+           -webkit-transform:rotate(360deg);
+         }
+      }
+      @keyframes rotate{
+        0%{
+          transform:rotate(0deg);
+         }
+         100%{
+           transform:rotate(360deg);
+         }
+      }
+</style>
+
+
+<div class="container">
+   <!-- Page-Title -->
+    <div class="row ">
+            <div class="col-sm-12">
+                <h4 class="page-title">容器列表</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">容器管理</a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'Dockercontainerlist' 1 %}">容器列表</a>
+                    </li>
+                </ol>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card-box">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="m-t-0 header-title"><b>Simpletour容器列表</b></h4>
+                                <p class="text-muted font-13">
+                                    服务器详细情况请点击容器ID号
+                                </p>
+                            </div>
+                            <div>
+                                <div class="col-sm-8">
+                                </div>
+                                <div class="col-sm-4">
+                                    <form method="get" action="{% url 'DockercontainerSearch' 1 %}">
+                                        <div class="input-group">
+                                            <input type="text" id="search" name="search" class="form-control" placeholder="输入容器ID或容器名">
+                                            <span class="input-group-btn">
+                                            <button type="submit" class="btn waves-effect waves-light btn-primary"  ><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                 </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <br>
+                                <div class="bootstrap-table">
+                                    <div class="table-responsive">
+                                        <table class="table-bordered" data-page-size="5" data-toggle="table" >
+                                            <thead>
+                                                <tr>
+
+                                                    <th>容器ID</th>
+                                                    <th>容器名</th>
+                                                    <th>属主机IP</th>
+                                                    <th>状态</th>
+                                                    <th>镜像</th>
+                                                    <th>命令</th>
+                                                    <th>创建时间</th>
+                                                    <th>操 作</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            {% for container in Containerdata %}
+                                                <tr>
+                                                    <td><a href="{% url 'Dockercontainerlist' container.id %}">{{container.containerID | slice:"12"}}</a></td>
+                                                    <td>{{container.Name|slice:"40"}}</td>
+                                                    <td>{{container.hostip}}</td>
+
+                                                    {% if 'Up' in container.status %}
+                                                        <td align="center"><span class="status state_color_510">running</span></td>
+                                                    {% elif 'Exited in container.status '%}
+                                                        <td align="center"><span class="status state_color_610">Exited </span></td>
+                                                    {%else%}
+                                                        <td align="center"><span class="status state_color_610">{{container.status}}</span></td>
+                                                    {%endif%}
+
+                                                    <td>{{container.image|slice:"30"}}</td>
+                                                    <td>{{container.command|slice:"30"}}</td>
+                                                    <td>{{container.Created|date:"Y-m-d H:i:s"}}</td>
+                                                    <td>
+                                                        {% if 'Up' in container.status %}
+                                                            <button data-id="{{container.containerID}}" id="stop" data-type="stop" class="btn btn-xs btn-danger change">停止</button>
+
+                                                        {% else %}
+                                                            <button data-id="{{container.containerID}}" id="start" data-type="start" class="btn btn-xs btn-info change">启动</button>
+
+
+                                                        {% endif%}
+                                                            <button data-id="{{container.containerID}}" id="restart"  data-type="restart" class="btn btn-xs btn-danger change">重启</button>
+
+                                                        <button type="button" class="btn btn-xs btn-info">控制台</button>
+                                                        <a href="{% url 'DockerLogOutput' container.containerID %}"   class="btn btn-xs btn-success" >显示日志</a>
+                                                        <button data-id="{{container.containerID}}" id="delete"  data-type="delete" class="btn btn-xs btn-danger change">删除</button>
+                                                        <i data-id='status' class="glyphicon glyphicon-repeat"></i>
+                                                    </td>
+                                                </tr>
+                                            {% endfor%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div>
+                        <nav>
+                        <ul class="pagination" >
+                            {{page}}
+                        </ul>
+                        </nav>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+
+<script>
+    var timer,$btn;
+    $(document).on('click','.change',function(e) {
+        $btn = $(this);
+        if($btn.hasClass('disabled')) return;
+        var dockerId = $btn.attr('data-id');
+        var type = $btn.attr('data-type');
+        $.ajax({
+            url:'/docker/container/' + type + '/'+dockerId,
+            beforeSend: function() {
+                $btn.addClass('disabled');
+                $btn.siblings('i').css('visibility','visible');
+            },
+            method:'GET',
+            dataType: 'json',
+            success:function(data){
+                var celeryId = data.celeryId;
+                timer = setInterval(function() {
+                    callback_status(type,celeryId,dockerId);
+                },1000);
+            },
+            error:function(){
+                $btn.siblings('i').css('visibility','hidden');
+                $btn.removeClass('disabled');
+            }
+        });
+
+    });
+
+
+    var callback_status = function(type,celeryId,dockerId) {
+
+        $.ajax({
+            url:'/docker/container/' + type + '/task/' + celeryId,
+            method:'GET',
+            dataType: 'json',
+            data:{
+                'containerid':dockerId,
+            },
+            success:function(data){
+                if(data.state == 'SUCCESS') {
+                    clearInterval(timer);
+                    if(data.result.type == 'start') {
+                        $btn.parents('tr').find('.status')
+                                .removeClass('state_color_610')
+                                .addClass('state_color_510')
+                                .text('running');
+                        $btn.removeClass('btn-info').addClass('btn-danger');
+                        $btn.text('停止');
+
+                    } else if(data.result.type == 'stop') {
+                        $btn.parents('tr').find('.status')
+                                .removeClass('state_color_510')
+                                .addClass('state_color_610')
+                                .text('Exited');
+                        $btn.removeClass('btn-danger').addClass('btn-info');
+                        $btn.text('启动');
+
+                    } else if(data.result.type == 'restart') {
+                        var oldValues = $btn.parents('tr').find('.status').text();
+                        if(oldValues == 'Exited'){
+                            $btn.parents('tr').find('.status')
+                                    .removeClass('state_color_610')
+                                    .addClass('state_color_510')
+                                    .text('running');
+                            $btn.removeClass('btn-info').addClass('btn-danger');
+                        } else {
+                            $btn.removeClass('btn-danger').addClass('btn-info');
+                        }
+                    }else if(data.result.type == 'delete'){
+                        $btn.parents('tr').remove();
+                    };
+                    $.Notification.autoHideNotify('success','top right','系统通知', data.result.resultInfo);
+                    $btn.siblings('i').css('visibility','hidden');
+                    $btn.removeClass('disabled');
+
+                } else if(data.state == 'FAILURE') {
+                    clearInterval(timer);
+                    $.Notification.autoHideNotify('error', 'top right', '系统通知', data.status);
+                    console.log(data.status);
+                    $btn.siblings('i').css('visibility','hidden');
+                    $btn.removeClass('disabled');
+                };
+            },
+            error:function(){
+
+            },
+        });
+    };
+</script>
+
+
+<script>
+
+
+</script>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/SimpletourDevops.iml" filepath="$PROJECT_DIR$/.idea/SimpletourDevops.iml" />
+      <module fileurl="file://D:/简途运维平台/docker_module/.idea/docker_module.iml" filepath="D:/简途运维平台/docker_module/.idea/docker_module.iml" />
+    </modules>
+  </component>
+</project>

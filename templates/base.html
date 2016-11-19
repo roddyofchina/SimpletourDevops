@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="www.divmb.com creativity">
+<meta name="author" content="www.divmb.com">
+<link rel="shortcut icon" href="/static/assets/images/favicon_1.ico">
+<title>SimpletourDevops</title>
+<!--Morris Chart CSS -->
+{% include 'tempdir/head_css.html' %}
+
+{% include 'tempdir/head_script.html'%}
+
+
+</head>
+<body class="fixed-left">
+
+<!-- Begin page -->
+<div id="wrapper">
+  <!-- Top Bar Start -->
+  <div class="topbar">
+    <!-- LOGO -->
+    <div class="topbar-left">
+      <div class="text-center"> <a href="index.html" class="logo"><i class="icon-magnet icon-c-logo"></i><span>Simpletour运维系统</span></a> </div>
+    </div>
+    <!-- Button mobile view to collapse sidebar menu -->
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="">
+          <div class="pull-left">
+            <button class="button-menu-mobile open-left"> <i class="ion-navicon"></i> </button>
+            <span class="clearfix"></span> </div>
+          <form role="search" class="navbar-left app-search pull-left hidden-xs">
+            <input type="text" placeholder="搜索..." class="form-control">
+            <a href=""><i class="fa fa-search"></i></a>
+          </form>
+          <ul class="nav navbar-nav navbar-right pull-right">
+            <li class="hidden-xs"> <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i class="icon-size-fullscreen"></i></a> </li>
+            <li class="dropdown"> <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="/static/assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'Userinfo' %}"><i class="ti-user m-r-5"></i> 个人信息</a></li>
+                <li><a href="{% url 'SysrestUserpassword' usersession %}"><i class="ti-settings m-r-5"></i> 重置密码</a></li>
+                <li><a href="{% url 'Logout' %}"><i class="ti-power-off m-r-5"></i> 退出系统</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </div>  <!--首页导航菜单-->
+  </div>
+
+  <!-- ========== Left Sidebar Start ========== -->
+  <div class="left side-menu">
+    <div class="sidebar-inner slimscrollleft">
+      <!--- Divider -->
+      <div id="sidebar-menu">
+        <ul>
+          <li> <a href="{% url 'index' %}" class="waves-effect "><i class="ti-home"></i> <span> 系统首页 </span></a> </li>
+          <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu"></i> <span>资产管理</span> </a>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'AssetsLists' 1  %}">资产表管理</a></li>
+              <li><a href="{% url 'ServerList' 1  %}">服务器列表</a></li>
+            </ul>
+          </li>
+          <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-server"></i> <span> 容器管理 </span> </a>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'DockerHosts' %}">主机列表</a></li>
+              <li><a href="{% url 'Dockercontainerlist' 1 %}">容器列表</a></li>
+              <li><a href="{% url 'DockerImages' 1 %}">镜像列表</a></li>
+            </ul>
+          </li>
+          <!--
+          <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-pencil-alt"></i><span> SALT管理 </span></a>
+            <ul class="list-unstyled">
+              <li><a href="form-elements.html">软件部署</a></li>
+              <li><a href="form-advanced.html">配置管理</a></li>
+              <li><a href="form-validation.html">批量执行</a></li>
+            </ul>
+          </li>-->
+          <!--
+          <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu-alt"></i><span> 应用更新 </span></a>
+            <ul class="list-unstyled">
+              <li><a href="tables-basic.html">WEB应用更新</a></li>
+              <li><a href="tables-datatable.html">jar包更新</a></li>
+              <li><a href="tables-editable.html">Nginx操作</a></li>
+            </ul>
+
+
+          </li>
+          -->
+
+
+          <li > <a href="/admin" class="waves-effect"><i class="ti-image"></i><span> 系统后台 </span></a>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>   <!--菜单-->
+  <!-- ============================================================== -->
+
+
+
+  <div class="content-page">
+    <!-- Start content -->
+
+    <div class="content">
+       {% block content %}
+
+       {% endblock %}
+      <!-- container -->
+    </div>
+    <!-- content -->
+    <footer class="footer text-right"> 2016 &copy; simpletourdevops 简途运维部 </footer>
+  </div>  <!--首页内容-->
+  <!-- ============================================================== -->
+  <!-- Right Sidebar
+  <div class="side-bar right-bar nicescroll">
+    <h4 class="text-center">Chat</h4>
+    <div class="contact-list nicescroll">
+      <ul class="list-group contacts-list">
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="/static/assets/images/users/avatar-1.jpg" alt=""> </div>
+          <span class="name">Chadengle</span> <i class="fa fa-circle online"></i> </a> <span class="clearfix"></span> </li>
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="assets/images/users/avatar-2.jpg" alt=""> </div>
+          <span class="name">Tomaslau</span> <i class="fa fa-circle online"></i> </a> <span class="clearfix"></span> </li>
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="assets/images/users/avatar-3.jpg" alt=""> </div>
+          <span class="name">Stillnotdavid</span> <i class="fa fa-circle online"></i> </a> <span class="clearfix"></span> </li>
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="assets/images/users/avatar-4.jpg" alt=""> </div>
+          <span class="name">Kurafire</span> <i class="fa fa-circle online"></i> </a> <span class="clearfix"></span> </li>
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="assets/images/users/avatar-5.jpg" alt=""> </div>
+          <span class="name">Shahedk</span> <i class="fa fa-circle away"></i> </a> <span class="clearfix"></span> </li>
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="assets/images/users/avatar-6.jpg" alt=""> </div>
+          <span class="name">Adhamdannaway</span> <i class="fa fa-circle away"></i> </a> <span class="clearfix"></span> </li>
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="assets/images/users/avatar-7.jpg" alt=""> </div>
+          <span class="name">Ok</span> <i class="fa fa-circle away"></i> </a> <span class="clearfix"></span> </li>
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="assets/images/users/avatar-8.jpg" alt=""> </div>
+          <span class="name">Arashasghari</span> <i class="fa fa-circle offline"></i> </a> <span class="clearfix"></span> </li>
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="assets/images/users/avatar-9.jpg" alt=""> </div>
+          <span class="name">Joshaustin</span> <i class="fa fa-circle offline"></i> </a> <span class="clearfix"></span> </li>
+        <li class="list-group-item"> <a href="#">
+          <div class="avatar"> <img src="assets/images/users/avatar-10.jpg" alt=""> </div>
+          <span class="name">Sortino</span> <i class="fa fa-circle offline"></i> </a> <span class="clearfix"></span> </li>
+      </ul>
+    </div>
+  </div>-->
+</div>
+{% include  "tempdir/foot_script.html" %}
+</body>
+</html>

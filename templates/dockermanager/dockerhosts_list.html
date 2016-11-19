@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link href="/static/assets/plugins/switchery/dist/switchery.min.css" rel="stylesheet" type="text/css">
+
+
+<div class="container">
+
+						<!-- Page-Title -->
+						<div class="row">
+							<div class="col-sm-12">
+								<h4 class="page-title">容器管理</h4>
+								<ol class="breadcrumb">
+									<li>
+										<a href="{% url 'DockerHosts' %}">容器管理</a>
+									</li>
+
+									<li class="active">
+										主机列表
+									</li>
+								</ol>
+							</div>
+						</div>
+
+                        <div class="row">
+							<div class="col-sm-10">
+								<div class="row">
+										<div class="col-sm-12">
+											<a  href="{% url 'DockerHostAdd' %}"><button class="btn btn-primary " type="button">添加宿主机</button></a>
+										</div>
+									</div>
+								<br>
+								<div class="card-box">
+
+									<div class="row">
+										<div class="col-sm-12">
+											<h4 class="m-t-0 header-title"><b>容器主机列表</b></h4>
+											<div class="p-20">
+												<table class="table table-striped m-0">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>设备名</th>
+															<th>主机名</th>
+															<th>主机IP</th>
+                                                            <th>docker端口</th>
+                                                            <th>启用</th>
+                                                            <td>操作</td>
+														</tr>
+													</thead>
+													<tbody>
+														{% for docker in Hostadata%}
+														<tr>
+															<th scope="row" data-id="{{docker.id}}">{{docker.id}}</th>
+															<td>{{docker.host.Assets.host_name}}</td>
+															<td>{{docker.host.hostname}}</td>
+															<td>{{docker.hostip}}
+                                                            </td>
+                                                            <td>{{docker.port}}</td>
+															<td>
+																{% if docker.enabled == 1 %}
+																    <input type="checkbox" name="enableCheckbox" checked  class="js-switch" data-plugin="switchery" data-color="#f05050" data-size="small"/>
+																{% else %}
+																	<input type="checkbox" name="enableCheckbox"  class="js-switch"  data-plugin="switchery" data-color="#f05050" data-size="small"/>
+																{%endif%}
+															</td>
+                                                             <td>
+                                                                 <a  href="{% url 'DockerHostEdit' docker.id %}" class="btn btn-xs btn-info">修改</a>
+																 <button  class="btn btn-xs btn-danger" onclick="hostdelete({{docker.id}})">删除</button>
+                                                             </td>
+														</tr>
+														{% endfor%}
+													</tbody>
+												</table>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+<script src="/static/assets/plugins/switchery/dist/switchery.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+		$('.switchery').click(function(e) {
+			var $this = $(this);
+			var checkboxValue = this.parentElement.querySelector('input').checked;
+			var id = $this.parent('td').siblings('th').attr('data-id');
+			if($this.hasClass('disabled')) return;
+			$this.addClass('disabled');
+			$.ajax({
+				method: 'POST',
+                dataType: 'json',
+				url: '{%url 'DockerHosts' %}',
+				data: {
+					'id': id,
+					'checkboxValue': checkboxValue,
+					'csrfmiddlewaretoken': '{{ csrf_token }}',
+				},
+				success: function(data) {
+					var msginfo=data.msginfo;
+					if(msginfo){
+						$.Notification.autoHideNotify('success','top right','系统通知', msginfo);
+					}
+					$this.removeClass('disabled');
+				},
+				error: function() {
+					$this.removeClass('disabled');
+				}
+			})
+		})
+	})
+
+
+
+
+</script>
+<script>
+	function hostdelete(e){
+		$.ajax({
+            method: "GET",
+            url:"/docker/server/del/" + e,
+            dataType: 'json',
+            success:function(result){
+                var msginfo=result.msginfo;
+                var msgerror=result.msgerror;
+                if(msginfo){
+                    $.Notification.autoHideNotify('success','top right','系统通知', msginfo);
+                    setTimeout(function() {
+                          location.href = '{% url 'DockerHosts'  %}';
+                     },2500);
+
+                }else{
+                    $.Notification.autoHideNotify('error', 'top right', '系统通知',msgerror);
+
+                }
+
+            },
+            error:function(e){
+                alert(e);
+
+            }
+
+        });
+	}
+
+
+</script>
+{% endblock%}

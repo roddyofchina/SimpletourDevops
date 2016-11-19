@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="container">
+
+			<!-- Page-Title -->
+			<div class="row">
+				<div class="col-sm-12">
+					<h4 class="page-title">容器管理</h4>
+					<ol class="breadcrumb">
+						<li>
+							<a href="{% url 'DockerHosts' %}">容器管理</a>
+						</li>
+
+						<li class="active">
+							容器日志
+						</li>
+					</ol>
+				</div>
+			</div>
+
+			<div class="row">
+				<div style="background-color:#000000;color:#FFFFFF;" class="col-sm-12" id="containerid" data-target="{{containerid}}">
+					{% for lin in dockerlogsdata %}
+							{{lin}}<br>
+					{%endfor%}
+				</div>
+			</div>
+		</div>
+
+<script>
+/*第一次读取最新通知*/
+  setTimeout(function() {
+             Push();
+           },
+        200);
+      /*30轮询读取函数*/
+        setInterval(function() {
+
+            Push();
+
+    },
+        2000);
+
+/*请求函数的ajax*/
+function Push() {
+	a=document.getElementById("containerid");
+	var id = a.getAttribute('data-target');
+    $.ajax({
+        type: "POST",
+        url: "/docker/container/logs/" + id,
+        data:{
+			csrfmiddlewaretoken:'{{ csrf_token  }}',
+        },
+        beforeSend: function() {},
+        success: function(data) {
+        	document.getElementById("containerid").innerHTML='';
+			for (var i=0;i<JSON.parse(data).dockerlogsdata.length;i++){
+				var HtmlText=JSON.parse(data).dockerlogsdata[i] + '<br/>'
+    			document.getElementById("containerid").innerHTML+=(HtmlText);
+    		}
+        },
+    });
+}
+
+</script>
+{% endblock%}

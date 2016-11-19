@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link href="/static/assets/plugins/select2/select2.css" rel="stylesheet" type="text/css">
+<link href="/static/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+
+<div class="container">
+   <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">个人信息</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">用户设置</a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'Userinfo' %}">个人信息</a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card-box">
+                <h4 class="m-t-0 header-title"><b>个人信息</b></h4>
+                <br>
+                <div class="grid-structure">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="about-info-p">
+                                <strong>姓名:</strong>
+                                <br>
+                                <p class="text-muted">{{Userdata.name}}</p>
+                            </div>
+                            <div class="about-info-p">
+                                <strong>用户名:</strong>
+                                <br>
+                                <p class="text-muted">{{Userdata.username}}</p>
+                            </div>
+                            <div class="about-info-p">
+                                <strong>联系方式:</strong>
+                                <br>
+                                <p class="text-muted">{{Userdata.phone}}</p>
+                            </div>
+                            <div class="about-info-p">
+                                <strong>邮箱地址:</strong>
+                                <br>
+                                <p class="text-muted">{{Userdata.email}}</p>
+                            </div>
+                            <div class="about-info-p">
+                                <strong>Q Q:</strong>
+                                <br>
+                                <p class="text-muted">{{Userdata.QQ}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="about-info-p">
+                                <strong>创建时间:</strong>
+                                <br>
+                                <p class="text-muted">{{Userdata.date_joined | date:"Y-m-d H:i"}}</p>
+                            </div>
+                            <div class="about-info-p">
+                                <strong>最后登录:</strong>
+                                <br>
+                                <p class="text-muted">{{Userdata.last_login | date:"Y-m-d H:i"}}</p>
+                            </div>
+                            <div class="about-info-p">
+                                <strong>用户状态:</strong>
+                                <br>
+                                {% if Userdata.is_active %}
+                                    <p class="text-muted">激活</p>
+                                {% else %}
+                                    <p class="text-muted">禁用</p>
+                                {% endif%}
+                            </div>
+                            <div class="about-info-p">
+                                <strong>年龄:</strong>
+                                <br>
+                                <p class="text-muted">{{Userdata.age}}</p>
+                            </div>
+                            <div class="about-info-p">
+                                <strong>部门:</strong>
+                                <br>
+                                <p class="text-muted">{{Userdata.department}}</p>
+                            </div>
+
+                             <div class="about-info-p">
+                                <strong>用户组:</strong>
+                                <br>
+                                 {% for i in Userdata.groups.all %}
+                                    <p class="text-muted">{{i.name}}</p>
+                                 {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<script src="/static/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="/static/assets/plugins/select2/select2.min.js" type="text/javascript"></script>
+
+{% endblock %}

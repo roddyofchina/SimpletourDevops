@@ -1,0 +1,430 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="page-title">服务器详情</h4>
+                        <ol class="breadcrumb">
+                            <li><a href="#">资产管理</a></li>
+                            <li><a href="{% url 'ServerList' 1 %}">服务器列表</a></li>
+                            <li class="active">服务器详情</li>
+                        </ol>
+
+                    </div>
+                </div>
+
+
+                <!-- 基本信息 -->
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="card-box">
+                            <h4 class="m-t-0 header-title"><b>基本信息：</b></h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">ID</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.id}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">服务器SN：</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.sn}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">资产编号：</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.Assets.device_number}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">主机名:</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.hostname}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">IDC:</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.Assets.IDC}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">厂商:</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.Firm}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">业务：</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.Assets.business}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">SaltstackID：</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.saltid}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 col-lg-3 text-center">
+                                    <div class="p-20">
+                                        <input class="knob" data-width="150" data-height="150" data-cursor=true data-fgColor="#fb6d9d" value="{{ServerData.cpu_count}}"/>
+                                        <h5 class="font-600 text-muted">CPU核数</h5>
+                                    </div>
+                                </div>
+                                 <div class="col-sm-3 col-lg-3 text-center">
+                                    <div class="p-20">
+                                        <input class="knob" data-width="150" data-height="150" data-cursor=true data-fgColor="#fb6d9d" value="{{ServerData.nic.count}}"/>
+                                        <h5 class="font-600 text-muted">网卡数</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 硬件信息 -->
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="card-box">
+                            <h4 class="m-t-0 header-title"><b>硬件信息：</b></h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">物理CPU</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.cpu_count}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">CPU核数：</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.cpu_core_count}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">内存：</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.mem}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">swap空间:</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.swap}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">操作系统:</label>
+                                        <div class="col-md-9">
+                                            <p>{{ServerData.system}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">网卡IP列表:</label>
+                                        <div class="col-md-9">
+                                            {%for i in ServerData.nic.all%}
+                                                    <p>{{i.ip}}</p>
+                                            {%endfor%}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                          <canvas id="doughnut1" height="200"></canvas>
+                                </div>
+
+                                <div class="col-md-3">
+                                          <canvas id="doughnut2" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <ul class="nav nav-tabs tabs">
+                            <li class="active tab">
+                                <a href="#home-2" data-toggle="tab" aria-expanded="false">
+                                    <span class="visible-xs"><i class="fa fa-home"></i></span>
+                                    <span class="hidden-xs">CPU信息</span>
+                                </a>
+                            </li>
+                            <li class="tab">
+                                <a href="#profile-2" data-toggle="tab" aria-expanded="false">
+                                    <span class="visible-xs"><i class="fa fa-user"></i></span>
+                                    <span class="hidden-xs">内存</span>
+                                </a>
+                            </li>
+                            <li class="tab">
+                                <a href="#messages-2" data-toggle="tab" aria-expanded="true">
+                                    <span class="visible-xs"><i class="fa fa-envelope-o"></i></span>
+                                    <span class="hidden-xs">硬盘</span>
+                                </a>
+                            </li>
+                            <li class="tab">
+                                <a href="#settings-2" data-toggle="tab" aria-expanded="false">
+                                    <span class="visible-xs"><i class="fa fa-cog"></i></span>
+                                    <span class="hidden-xs">网卡</span>
+                                </a>
+                            </li>
+                            <li class="tab">
+                                <a href="#soft-2" data-toggle="tab" aria-expanded="false">
+                                    <span class="visible-xs"><i class="fa fa-soft"></i></span>
+                                    <span class="hidden-xs">软件</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home-2">
+                                <div class="row">
+                                    <label class="col-md-2 control-label">uuid:</label>
+                                    <div class="col-md-10">
+                                        <p>{{ServerData.cpu.uuid}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-md-2 control-label">CPU型号:</label>
+                                    <div class="col-md-4">
+                                        <p>{{ServerData.cpu.model}}</p>
+                                    </div>
+                                    <label class="col-md-2 control-label">CPU Mhz:</label>
+                                    <div class="col-md-2">
+                                        <p>{{ServerData.cpu.cpu_mhz}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-md-2 control-label">CPU架构:</label>
+                                    <div class="col-md-2">
+                                        <p>{{ServerData.cpu.Architecture}}</p>
+                                    </div>
+                                    <label class="col-md-2 control-label">生产商:</label>
+                                    <div class="col-md-2">
+                                        <p>{{ServerData.cpu.Vendor}}</p>
+                                    </div>
+                                     <label class="col-md-2 control-label">Thread:</label>
+                                    <div class="col-md-2">
+                                        <p>{{ServerData.cpu.Thread}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-md-2 control-label">1级缓存:</label>
+                                    <div class="col-md-2">
+                                        <p>{{ServerData.cpu.L1cache}}</p>
+                                    </div>
+                                    <label class="col-md-2 control-label">2级缓存:</label>
+                                    <div class="col-md-2">
+                                        <p>{{ServerData.cpu.L2cache}}</p>
+                                    </div>
+                                    <label class="col-md-2 control-label">3级缓存:</label>
+                                    <div class="col-md-2">
+                                        <p>{{ServerData.cpu.L3cache}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="profile-2">
+                                <div class="row">
+                                    <label class="col-md-2 control-label">容量:</label>
+                                    <div class="col-md-4">
+                                        <p>{{ServerData.mem}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-md-2 control-label">SWAP容量:</label>
+                                    <div class="col-md-4">
+                                        <p>{{ServerData.swap}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="messages-2">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="p-1">
+                                            <table class="table m-0">
+
+                                                <thead>
+                                                <tr>
+                                                    <th>硬盘名</th>
+                                                    <th>容量</th>
+                                                    <th>UUID号</th>
+                                                    <th>硬盘类型</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for i in ServerData.disk.all %}
+                                                    <tr>
+                                                        <th scope="row">{{i.name}}</th>
+                                                        <td>{{i.capacity}}</td>
+                                                        <td>{{i.uuid}}</td>
+                                                        <td>{{i.disk_type}}</td>
+                                                    </tr>
+                                                {%endfor%}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="settings-2">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="p-1">
+                                            <table class="table m-0">
+
+                                                <thead>
+                                                <tr>
+                                                    <th>网卡名</th>
+                                                    <th>IP</th>
+                                                    <th>mac</th>
+                                                    <th>netmask</th>
+                                                    <th>状态</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {%for i in ServerData.nic.all %}
+                                                    <tr>
+                                                        <th scope="row">{{i.name}}</th>
+                                                        <td>{{i.ip}}</td>
+                                                        <td>{{i.mac}}</td>
+                                                        <td>{{i.netmask}}</td>
+                                                        {% if i.nicstatus %}
+                                                            <td>UP</td>
+                                                        {%else%}
+                                                            <td>DOWN</td>
+                                                        {%endif%}
+                                                    </tr>
+                                                {%endfor%}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="soft-2">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="p-1">
+                                            <table class="table m-0">
+
+                                                <thead>
+                                                <tr>
+                                                    <th>软件名</th>
+                                                    <th>版本</th>
+                                                    <th>序列号</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {%for i in ServerData.software.all %}
+                                                <tr>
+                                                    <th scope="row">{{i.name}}</th>
+                                                    <td>{{i.version}}</td>
+                                                    <td>{{i.license}}</td>
+                                                </tr>
+                                                {%endfor%}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div> <!-- container -->
+
+ <!-- EASY PIE CHART JS -->
+<script src="/static/assets/plugins/jquery.easy-pie-chart/dist/easypiechart.min.js"></script>
+<script src="/static/assets/plugins/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+<script src="/static/assets/pages/easy-pie-chart.init.js"></script>
+
+<!--
+<script src="/static/assets/plugins/flot-chart/jquery.flot.js"></script>
+<script src="/static/assets/plugins/flot-chart/jquery.flot.tooltip.min.js"></script>
+<script src="/static/assets/plugins/flot-chart/jquery.flot.resize.js"></script>
+
+<script src="/static/assets/plugins/flot-chart/jquery.flot.pie.js"></script>
+
+<script>
+
+       $(function(){
+            var data = [
+                { label: "sda",  data: 500, },
+                { label: "sdb",  data: 300,},
+                { label: "sdc",  data: 100,},
+            ];
+
+            $.plot($("#pie-chart-container"), data, {
+                series: {
+                          pie: {
+                                   show: true, //显示饼图
+                                   //innerRadius: 0.5,
+                         }
+                },
+                legend: {
+                            show: false, //不显示图例
+                },
+                grid : {
+                        hoverable : true,
+
+                },
+                colors: ["#5fbeaa","#ebeff2","#34d3eb",],
+                tooltip: true,
+                tooltipOpts: {
+                    content: "%p, %s", // show percentages, rounding to 2 decimal places
+                    shifts: {
+                        x: 20,
+                        y: 0
+                    },
+                    defaultTheme: false
+                },
+            });
+       });
+</script>-->
+
+<script src="/static/assets/plugins/Chart.js/Chart.min.js"></script>
+<script>
+var memdata = [
+            {
+                value: {{ServerData.mem}},
+                color: "#5fbeaa",
+                highlight: "#5fbeaa",
+                label: "内存容量"
+            }, {
+                value: {{ServerData.swap}},
+                color: "#5d9cec",
+                highlight: "#5d9cec",
+                label: "Swap容量"
+            },
+        ]
+
+
+
+
+var diskdata = {{Diskhtml|safe}}
+
+
+
+var myPie = new Chart(document.getElementById("doughnut1").getContext("2d")).Doughnut(memdata);
+var myPie = new Chart(document.getElementById("doughnut2").getContext("2d")).Pie(diskdata);
+
+</script>
+
+
+
+
+{% endblock %}
