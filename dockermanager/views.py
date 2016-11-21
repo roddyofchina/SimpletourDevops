@@ -7,6 +7,7 @@ from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required
 from dockermanager.models import DockerHost,Dockerimage,DockerContainer
+from django.contrib.auth.decorators import permission_required
 
 # Create your views here.
 from webapp.Extends import PageList
@@ -19,6 +20,7 @@ import docker
 from webapp.models import *
 
 @login_required()
+@permission_required('dockermanger.docker_index_view',raise_exception=True)
 def Dockercontainerlist(request,page):
     usersession=request.session.get('user_id')
     if request.method == 'POST':
@@ -41,6 +43,8 @@ def Dockercontainerlist(request,page):
         return render(request,'dockermanager/containers_list.html',ret)
 
     else:
+
+        DockerHostData= DockerHost.objects.all()
         #分页代码
         (page,start,end,per_item)=PageList.PageCount(page)
         count = DockerContainer.objects.all().count()
@@ -54,10 +58,10 @@ def Dockercontainerlist(request,page):
 
         ret = {'Containerdata': result,
                'count': count,
+               'DockerHostData':DockerHostData,
                'page': page,
                'usersession':usersession}
         return render(request,'dockermanager/containers_list.html',ret)
-
 
 
 @login_required()
@@ -65,12 +69,26 @@ def DockercontainerSearch(request,page):
     usersession=request.session.get('user_id')
     if request.method == 'GET':
         searchdata = request.GET.get('search')
+
+        ipData = request.GET.get('ipList')
+        status = request.GET.get('status')
+
+        DockerHostData = DockerHost.objects.all()
         #分页代码
         (page,start,end,per_item)=PageList.PageCount(page)
-        count = DockerContainer.objects.filter(Q(containerID__contains=searchdata) | Q(Name__contains=searchdata)).count()
-        result = DockerContainer.objects.filter(Q(containerID__contains=searchdata) | Q(Name__contains=searchdata)).order_by('-id')[start:end]
+
+
+        count=DockerContainer.objects.filter(Q(hostip__contains=ipData) & Q(status__contains=status),
+                                       Q(containerID__contains=searchdata) | Q(Name__contains=searchdata)).count()
+
+        result=DockerContainer.objects.filter(Q(hostip__contains=ipData) & Q(status__contains=status),
+                                                  Q(containerID__contains=searchdata) | Q(Name__contains=searchdata)).order_by('-id')[start:end]
+
+        #count = DockerContainer.objects.filter(Q(containerID__contains=searchdata) | Q(Name__contains=searchdata)).count()
+        #result = DockerContainer.objects.filter(Q(containerID__contains=searchdata) | Q(Name__contains=searchdata)).order_by('-id')[start:end]
         url = "/docker/container/search"
-        search=u"?search=%s" %searchdata
+        print url
+        search=u"?search=%s&status=%s&ipList=%s" %(searchdata,status,ipData)
         if count%per_item == 0:
             all_pages_count = count/per_item
         else:
@@ -79,11 +97,10 @@ def DockercontainerSearch(request,page):
 
         ret = {'Containerdata': result,
                'count': count,
+               'DockerHostData': DockerHostData,
                'page': page,
                'usersession':usersession}
         return render(request,'dockermanager/containers_list.html',ret)
-
-
 
 
 @login_required()
@@ -108,6 +125,7 @@ def DockerHosts(request):
 
 
 @login_required()
+@permission_required('dockermanger.add_dockerhost',raise_exception=True)
 def DockerHostAdd(request):
 
     username = request.session.get('user_name')
@@ -137,6 +155,7 @@ def DockerHostAdd(request):
             restdata['data'] = form
     return render(request,'dockermanager/dockerhosts_add.html', restdata)
 
+
 @login_required()
 def DockerImages(request,page):
     usersession=request.session.get('user_id')
@@ -161,6 +180,7 @@ def DockerImages(request,page):
         return render(request,'dockermanager/images_list.html',ret)
 
 @login_required()
+@permission_required('dockermanger.delete_dockerimage',raise_exception=True)
 def DockerImageDelete(request, imageid):
     username = request.session.get('user_name')
     if request.method == 'GET':
@@ -179,6 +199,7 @@ def DockerImageDelete(request, imageid):
             return HttpResponse(u"没有该镜像!!")
 
 @login_required()
+@permission_required('dockermanger.delete_dockerhost',raise_exception=True)
 def DockerHostDel(request,hostid):
     username = request.session.get('user_name')
     if request.method == 'GET':
@@ -188,6 +209,7 @@ def DockerHostDel(request,hostid):
        return HttpResponse(json.dumps(msg))
 
 @login_required()
+@permission_required('dockermanger.change_dockerhost',raise_exception=True)
 def DockerHostEdit(request,hostid):
     usersession=request.session.get('user_id')
     username = request.session.get('user_name')
@@ -228,6 +250,7 @@ def DockerContainerRestart(request,containerId):
         return HttpResponse(json.dumps(msg))
 
 @login_required()
+@permission_required('dockermanger.delete_dockercontainerinfo',raise_exception=True)
 def DockerContainerDel(request,containerId):
     username = request.session.get('user_name')
     if request.method == 'GET':

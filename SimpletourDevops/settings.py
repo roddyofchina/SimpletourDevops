@@ -28,7 +28,6 @@ SECRET_KEY = '7yk*v@pp1dxi+9fdg-=_3_&!hh4=4tiukajl1^-m$(_2q=gw=9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -62,6 +61,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'SimpletourDevops.urls'
@@ -148,12 +148,7 @@ STATICFILES_DIRS = (
 )
 
 
-
-
-
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.qq.com'
 EMAIL_PORT = 25
@@ -161,68 +156,4 @@ EMAIL_HOST_USER = '923401910@qq.com'
 EMAIL_HOST_PASSWORD = 'utzvxwccfxhkbcdc'
 DEFAULT_FROM_EMAIL = '923401910@qq.com'
 
-
-
-
-
-
-
-
-
-# Django Suit configuration example
-SUIT_CONFIG = {
-    # header
-    'ADMIN_NAME': u'SimpletourOps管理后台',
-    'HEADER_DATE_FORMAT': 'Y年m月d日  H:i',
-    'DATE_FORMAT': 'Y-m-d',
-
-    #'MENU_EXCLUDE': ('auth.Group', 'auth'),
-
-    'MENU': (
-        'sites',
-        {'app': 'servermanager','label': u'资产管理', 'icon':'icon-tasks','models':('servermanager.Assets',
-                                                                              'servermanager.Server',
-
-                                                                              )},
-        {'label': u'资产组件','icon':'icon-plus','models': ('servermanager.Cpu',
-                                                          'servermanager.Mem',
-                                                          'servermanager.Disk',
-                                                          'servermanager.NIC',
-                                                          'servermanager.kernel_info',
-                                                          'servermanager.Software',
-                                                          'servermanager.Provider',
-                                                          'servermanager.DeviceType',
-                                                          'servermanager.IDC',
-                                                          'servermanager.Business',
-                                                       )
-        },
-         '-',  #分离器
-
-         {'app': 'servermanager','label': u'Docker管理', 'icon':'icon-inbox','models':('dockermanager.DockerHost',
-                                                                                    'dockermanager.DockerContainer',
-                                                                                    'dockermanager.Dockerimage',
-                                                                              )},
-
-        '-',
-        {'app': 'webapp', 'label': u'用户管理','icon':'icon-user','models':('auth.group',
-                                                                           'webapp.Suser',
-                                                                           'webapp.Department',
-                                                                           'webapp.History_Login',
-                                                                         )},
-
-
-
-        #{'label': u'用户组管理', 'icon':'icon-cog', 'models': ('auth.group','servermanager.software',)},
-    ),
-
-    'LIST_PER_PAGE': 15,
-
-    'MENU_ICONS': {
-        'sites': 'icon-leaf',
-        'webapp': 'icon-lock',
-    }
-}
-
-
-
-#SESSION_COOKIE_AGE = 60*180
+SESSION_COOKIE_AGE = 60*180

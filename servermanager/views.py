@@ -7,6 +7,7 @@ from webapp.models import *
 from webapp.Extends import PageList
 from webapp.tasks import SaltGrains,UpdateServerInfo
 from django.db.models import Q
+from django.contrib.auth.decorators import permission_required
 
 import json
 
@@ -15,6 +16,7 @@ def HostLists(request):
     return render(request,'servermanager/hosts.html')
 
 @login_required()
+@permission_required('servermanager.cmdb_assets_view',raise_exception=True)
 def AssetsLists(request,page):
     usersession=request.session.get('user_id')
     if request.method == 'POST':
@@ -70,6 +72,7 @@ def AssetsDetail(request,id):
         return render(request,'servermanager/assetsdetail.html',ret)
 
 @login_required()
+@permission_required('servermanager.cmdb_server_view',raise_exception=True)
 def ServerList(request,page):
     usersession=request.session.get('user_id')
     if request.method  == 'POST':
@@ -130,6 +133,7 @@ def ServerDetail(request,id):
         return render(request,'servermanager/servers_detail.html',ret)
 
 @login_required()
+@permission_required('servermanager.delete_assets',raise_exception=True)
 def DeleteServer(request,id):
     username = request.session.get('user_name')
     if request.method == 'GET':
@@ -141,6 +145,7 @@ def DeleteServer(request,id):
         return HttpResponse(u'删除主机成功')
 
 @login_required()
+@permission_required('servermanager.delete_assets',raise_exception=True)
 def DeleteAsset(request,id):
     username = request.session.get('user_name')
     if request.method == 'GET':
@@ -157,6 +162,7 @@ def DeleteAsset(request,id):
             return HttpResponse(json.dumps(msg))
 
 @login_required()
+@permission_required('servermanager.change_assets',raise_exception=True)
 def ChangeAsset(request,id):
     usersession=request.session.get('user_id')
     username = request.session.get('user_name')
@@ -215,7 +221,9 @@ def ChangeAsset(request,id):
         }
         return render(request,'servermanager/assetschange.html',ret)
 
+
 @login_required()
+@permission_required('servermanager.change_server',raise_exception=True)
 def ChangeServer(request,id):
     usersession=request.session.get('user_id')
     username = request.session.get('user_name')
@@ -298,6 +306,7 @@ def ChangeServer(request,id):
              'NicData':NicData,
              'CpuData':CpuData}
         return render(request,'servermanager/servers_change.html',ret)
+
 
 @login_required()
 def UpdateServer(request,id):

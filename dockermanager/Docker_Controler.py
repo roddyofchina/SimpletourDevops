@@ -20,20 +20,31 @@ def GetDockerServerinfo():
             for container in Dockerdata:
                 '''获取容器最新状态进行修改'''
                 if DockerContainer.objects.filter(containerID=container['Id']):
+                    status=container['Status']
+                    if 'Up' in status:
+                        status= 'running'
+                    else:
+                        status = 'Exited'
                     OldContainer = DockerContainer.objects.get(containerID=container['Id'])
                     OldContainer.Name=container['Names'][0].lstrip('/')
                     OldContainer.command=container['Command']
-                    OldContainer.status=container['Status']
+                    OldContainer.status=status
                     OldContainer.image=container['Image']
                     OldContainer.hostip=server.hostip
                     OldContainer.Created=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(container['Created']))
                     OldContainer.save()
                 else:
                     '''如果没有容器就添加'''
+                    status = container['Status']
+                    if 'Up' in status:
+                        status = 'running'
+                    else:
+                        status = 'Exited'
                     NewContainer=DockerContainer(containerID=container['Id'],
                                     Name=container['Names'][0].lstrip('/'),
                                     command=container['Command'],
-                                    status=container['Status'],
+                                    status=status,
+
                                     image=container['Image'],
                                     hostip=server.hostip,
                                     Created=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(container['Created'])))

@@ -57,20 +57,26 @@
       <!--- Divider -->
       <div id="sidebar-menu">
         <ul>
-          <li> <a href="{% url 'index' %}" class="waves-effect "><i class="ti-home"></i> <span> 系统首页 </span></a> </li>
-          <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu"></i> <span>资产管理</span> </a>
-            <ul class="list-unstyled">
-              <li><a href="{% url 'AssetsLists' 1  %}">资产表管理</a></li>
-              <li><a href="{% url 'ServerList' 1  %}">服务器列表</a></li>
-            </ul>
-          </li>
-          <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-server"></i> <span> 容器管理 </span> </a>
+            {% if perms.webapp.system_index_view %}
+            <li> <a href="{% url 'index' %}" class="waves-effect "><i class="ti-home"></i> <span> 系统首页 </span></a> </li>
+            {%endif%}
+            {% if perms.servermanager.assets_index_view %}
+                <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu"></i> <span>资产管理</span> </a>
+                <ul class="list-unstyled">
+                  <li><a href="{% url 'AssetsLists' 1  %}">资产表管理</a></li>
+                  <li><a href="{% url 'ServerList' 1  %}">服务器列表</a></li>
+                </ul>
+              </li>
+            {%endif%}
+            {%if perms.dockermanager.docker_index_view%}
+               <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-server"></i> <span> 容器管理 </span> </a>
             <ul class="list-unstyled">
               <li><a href="{% url 'DockerHosts' %}">主机列表</a></li>
               <li><a href="{% url 'Dockercontainerlist' 1 %}">容器列表</a></li>
               <li><a href="{% url 'DockerImages' 1 %}">镜像列表</a></li>
             </ul>
           </li>
+            {%endif%}
           <!--
           <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-pencil-alt"></i><span> SALT管理 </span></a>
             <ul class="list-unstyled">

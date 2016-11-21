@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'resetpass/(?P<token>\w+@\w+.\w+.[-_\w]*\w+.[-_\w]*\w+)/$', ResetPassword, name='ResetPassword'),
     url(r'userinfo/$',Userinfo, name='Userinfo'),
     url(r'restuserpass/(\d+)$', SysrestUserpassword, name='SysrestUserpassword'),
+
 ]

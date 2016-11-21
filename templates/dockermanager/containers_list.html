@@ -66,18 +66,42 @@
                                 </p>
                             </div>
                             <div>
-                                <div class="col-sm-8">
-                                </div>
                                 <div class="col-sm-4">
-                                    <form method="get" action="{% url 'DockercontainerSearch' 1 %}">
-                                        <div class="input-group">
-                                            <input type="text" id="search" name="search" class="form-control" placeholder="输入容器ID或容器名">
-                                            <span class="input-group-btn">
-                                            <button type="submit" class="btn waves-effect waves-light btn-primary"  ><i class="fa fa-search"></i></button>
-                                            </span>
-                                        </div>
-                                    </form>
-                                 </div>
+                                </div>
+                                <form method="get" action="{% url 'DockercontainerSearch' 1 %}">
+                                    <div class="col-sm-2">
+
+                                     <label class="col-sm-3 control-label">IP</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="ipList">
+                                                    <option value="">--------选择--------</option>
+                                                    {% for ip in DockerHostData %}
+                                                    <option value="{{ip.hostip}}">{{ip.hostip}}</option>
+                                                    {%endfor%}
+                                                </select>
+                                            </div>
+                                     </div>
+                                     <div class="col-sm-2">
+                                     <label class="col-sm-3 control-label">状态</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" name="status">
+                                                    <option value="">--------选择--------</option>
+                                                    <option value="running">running</option>
+                                                    <option value="Exited">exited</option>
+                                                </select>
+                                            </div>
+                                     </div>
+                                    <div class="col-sm-4">
+
+                                            <div class="input-group">
+                                                <input type="text" id="search" name="search" class="form-control" placeholder="输入容器ID或容器名">
+                                                <span class="input-group-btn">
+                                                <button type="submit" class="btn waves-effect waves-light btn-primary"  ><i class="fa fa-search"></i></button>
+                                                </span>
+                                            </div>
+
+                                     </div>
+                                </form>
                             </div>
                             <div class="col-sm-12">
                                 <br>
@@ -106,7 +130,7 @@
                                                     <td>{{container.Name|slice:"40"}}</td>
                                                     <td>{{container.hostip}}</td>
 
-                                                    {% if 'Up' in container.status %}
+                                                    {% if  container.status == 'running' %}
                                                         <td align="center"><span class="status state_color_510">running</span></td>
                                                     {% elif 'Exited in container.status '%}
                                                         <td align="center"><span class="status state_color_610">Exited </span></td>
@@ -141,7 +165,7 @@
                                 </div>
                             </div>
                         </div>
-                    <div>
+                     <div>
                         <nav>
                         <ul class="pagination" >
                             {{page}}

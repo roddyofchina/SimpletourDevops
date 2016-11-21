@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,Group,PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
 from django.utils import six, timezone
 
 class Department(models.Model):
@@ -13,10 +13,7 @@ class Department(models.Model):
         verbose_name = u'部门管理'
         verbose_name_plural = u"部门管理"
         permissions = (
-            ("webapp_dept_add", u"添加部门信息"),
-            ("webapp_dept_view", u"查看部门信息"),
-            ("webapp_dept_change", u"修改部门信息"),
-            ("webapp_dept_delete", u"删除部门信息"),
+            ("webapp_department_view", u"Can view %s" % verbose_name),
         )
 
 class MyUserManager(BaseUserManager):
@@ -50,6 +47,7 @@ class MyUserManager(BaseUserManager):
 
         user.is_staff = True
         user.is_superuser = True
+        user.is_active=True
 
         user.save(using=self._db)
         return user
@@ -108,15 +106,6 @@ class Suser(AbstractBaseUser,PermissionsMixin):
     def __str__(self):              # __unicode__ on Python 2
         return self.email
 
-    def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
-        return True
-
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
-        return True
 
     @property
     def is_admin(self):
@@ -134,12 +123,9 @@ class Suser(AbstractBaseUser,PermissionsMixin):
         #unique_together = ('email', )
 
         permissions = (
-            ("webapp_users_add", u"添加用户"),
             ("webapp_users_view", u"查看用户"),
             ("webapp_users_view_info", u"查看用户详细"),
-            ("webapp_users_change", u"修改用户"),
-            ("webapp_users_delete", u"删除用户"),
-            ("webapp_users_restpass", u"修改用户密码"),
+            ("system_index_view","系统首页"),
         )
 
 class History_Login(models.Model):
@@ -154,8 +140,7 @@ class History_Login(models.Model):
         verbose_name = u'登录历史'
         verbose_name_plural = u"登录历史"
         permissions = (
-            ("webapp_history_view", u"查看登录历史"),
-            ("webapp_history_delete", u"删除登录历史"),
+            ("webapp_history_view", u"Can view %s" %verbose_name),
         )
 
 class Operation(models.Model):

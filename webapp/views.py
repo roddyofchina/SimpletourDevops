@@ -2,7 +2,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 from webapp.models import Suser, History_Login,Operation
 from webapp import forms
 from webapp.tasks import sendmail,resetpass
@@ -16,7 +19,6 @@ import json
 
 @login_required
 def index(request):
-
     priceData = Assets.objects.all().aggregate(Sum('price'))
     #如果用户从管理后台登录将设置session值
     if not request.session.get('user_id'):
@@ -157,6 +159,7 @@ def SendResetEmail(request):
     else:
         return render(request,'webapp/sendresetpw.html')
 
+
 #重置密码
 def ResetPassword(request,token):
     restdata = {'data':'','regerror':'','token':token}
@@ -199,6 +202,7 @@ def Userinfo(reqest):
         Userdata=Suser.objects.get(id=userid)
         data={'Userdata':Userdata,'usersession':reqest.session.get('user_id')}
         return render(reqest,'webapp/userinfo.html',data)
+
 
 @login_required()
 def SysrestUserpassword(request,id):

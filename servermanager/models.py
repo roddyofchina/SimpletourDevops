@@ -15,10 +15,9 @@ class DeviceType(models.Model):
         verbose_name = u'设备类型'
         verbose_name_plural = u"设备类型"
         permissions = (
-            ("cmdb_devicetype_add", "添加设备类型"),
-            ("cmdb_devicetype_view", "查看设备类型"),
-            ("cmdb_devicetype_change", "修改设备类型"),
-            ("cmdb_devicetype_delete", "删除设备类型"),
+
+            ("cmdb_devicetype_view", "Can view %s" %verbose_name),
+
         )
 
 '''IDC信息管理表'''
@@ -37,10 +36,7 @@ class IDC(models.Model):
         verbose_name = u'IDC'
         verbose_name_plural = u'IDC'
         permissions = (
-            ("cmdb_idc_add", "添加IDC"),
-            ("cmdb_idc_view", "查看IDC"),
-            ("cmdb_idc_change", "修改IDC"),
-            ("cmdb_idc_delete", "删除IDC"),
+            ("cmdb_idc_view", "Can view %s" %verbose_name),
         )
 '''业务表'''
 class Business(models.Model):
@@ -54,10 +50,9 @@ class Business(models.Model):
         verbose_name = u'业务列表'
         verbose_name_plural = u'业务列表'
         permissions = (
-            ("cmdb_devicetype_add", u"添加业务"),
-            ("cmdb_devicetype_view", u"查看业务"),
-            ("cmdb_devicetype_change", u"修改业务"),
-            ("cmdb_devicetype_delete", u"删除业务"),
+
+            ("cmdb_devicetype_view", "Can view %s" %verbose_name),
+
         )
 
 '''提供商表'''
@@ -75,10 +70,7 @@ class Provider(models.Model):
         verbose_name = u'供应商'
         verbose_name_plural = u'供应商'
         permissions = (
-            ("cmdb_provider_add", u"添加提供商"),
-            ("cmdb_provider_view", u"查看提供商"),
-            ("cmdb_provider_change", u"修改提供商"),
-            ("cmdb_provider_delete", u"删除提供商"),
+            ("cmdb_provider_view", "Can view %s" %verbose_name),
         )
 '''资产表'''
 class Assets(models.Model):
@@ -143,10 +135,10 @@ class Assets(models.Model):
         verbose_name = u'资产表管理'
         verbose_name_plural = u'资产表管理'
         permissions = (
-            ("cmdb_assets_add", u"添加资产"),
-            ("cmdb_assets_view", u"查看资产"),
-            ("cmdb_assets_change", u"修改资产"),
-            ("cmdb_assets_delete", u"删除资产"),
+
+            ("cmdb_assets_view", "Can view %s" %verbose_name),
+
+            ("assets_index_view", "资产管理"),
         )
 
 '''软件版本'''
@@ -162,10 +154,9 @@ class Software(models.Model):
         verbose_name = u'软件管理'
         verbose_name_plural = u'软件管理'
         permissions = (
-            ("cmdb_software_add", u"添加软件"),
-            ("cmdb_software_view", u"查看软件"),
-            ("cmdb_software_change", u"修改软件"),
-            ("cmdb_software_delete", u"删除软件"),
+
+            ("cmdb_software_view", "Can view %s" %verbose_name),
+
         )
 '''服务器主表'''
 class Server(models.Model):
@@ -230,10 +221,9 @@ class Server(models.Model):
         verbose_name = u'服务器管理'
         verbose_name_plural = '服务器管理'
         permissions = (
-            ("cmdb_server_add", u"添加服务器"),
-            ("cmdb_server_view", u"查看服务器"),
-            ("cmdb_server_change", u"修改服务器"),
-            ("cmdb_server_delete", u"删除服务器"),
+
+            ("cmdb_server_view", "Can view %s" %verbose_name),
+
         )
 class Cpu(models.Model):
     uuid = models.CharField(u'UUID号',max_length=64,blank=True)

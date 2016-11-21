@@ -59,8 +59,11 @@ class DockerContainer(models.Model):
         return self.Name
 
     class Meta:
-        verbose_name = 'Docker容器'
-        verbose_name_plural = "Docker容器"
+        verbose_name = u'Docker容器'
+        verbose_name_plural = u"Docker容器"
+        permissions = (
+            ("docker_index_view", "Can view %s" % verbose_name),
+        )
 
 
 class DockerContainerInfo(models.Model):
@@ -76,8 +79,6 @@ class DockerContainerInfo(models.Model):
     MacAddress = models.CharField(u'网卡mac地址', max_length=64)
     uptime = models.CharField(u'运行时间', max_length=32,blank=True)
     gateway = models.GenericIPAddressField(u'网关')
-
-
 
 class ContainerPorts(models.Model):
     containerid = models.CharField(u'容器ID', max_length=48)   #与上表进行关联
