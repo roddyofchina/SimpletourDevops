@@ -4,5 +4,6 @@ itsdangerous==0.24
 celery
 https://github.com/darklow/django-suit/tarball/v2-vertical
 MySQL-python
+docker-py
 
 
