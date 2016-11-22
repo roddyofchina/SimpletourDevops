@@ -28,7 +28,7 @@ SECRET_KEY = '7yk*v@pp1dxi+9fdg-=_3_&!hh4=4tiukajl1^-m$(_2q=gw=9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.4.223',]
 
 
 
@@ -153,7 +153,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.qq.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = '923401910@qq.com'
-EMAIL_HOST_PASSWORD = 'utzvxwccfxhkbcdc'
+EMAIL_HOST_PASSWORD = 'xxxxxxxx'
 DEFAULT_FROM_EMAIL = '923401910@qq.com'
 
 SESSION_COOKIE_AGE = 60*180
