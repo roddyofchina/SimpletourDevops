@@ -129,10 +129,11 @@ def DockerServers():
 #更新资产
 @celery.task()
 def UpdateServerInfo(serverid):
+    salt = SaltApi()
     serverdata = Server.objects.get(id=serverid)
     saltid=serverdata.saltid
-    data=SaltGrains.delay(dict(id=saltid))
-    ServerInfo=data.get()
+    data=salt.grainsall(saltid)
+    ServerInfo=data
 
     #CPU信息
     CpuData=ServerCPUInfo(ServerInfo,saltid)
@@ -258,7 +259,7 @@ def UpdateServerInfo(serverid):
         capacity= diskvalue['size']
         disk_type=diskvalue['type']
 
-        if Disk.objects.filter(parent_sn=parentsn):
+        if Disk.objects.filter(uuid=uuid):
             for OldDisk in Disk.objects.filter(parent_sn=parentsn):
                 OldDisk.name = name
                 OldDisk.capacity=capacity

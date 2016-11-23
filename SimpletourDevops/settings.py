@@ -143,6 +143,7 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
 )
@@ -153,7 +154,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.qq.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = '923401910@qq.com'
-EMAIL_HOST_PASSWORD = 'xxxxxxxx'
+EMAIL_HOST_PASSWORD = 'utzvxwccfxhkbcdc'
 DEFAULT_FROM_EMAIL = '923401910@qq.com'
 
 SESSION_COOKIE_AGE = 60*180

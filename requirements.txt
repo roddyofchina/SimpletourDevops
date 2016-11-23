@@ -5,5 +5,7 @@ celery
 https://github.com/darklow/django-suit/tarball/v2-vertical
 MySQL-python
 docker-py
-
+supervisor
+uwsgi
+redis
 

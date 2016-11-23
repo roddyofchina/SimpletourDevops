@@ -37,6 +37,7 @@ class ServerCPUInfo(ServerBaseInfo):
         servercpuinfo['thread'] = self.data[self.minion]['CPU_Info']['cpu processor']
         self.ServerHardInfo['servercpuinfo'] =  servercpuinfo
         return self.ServerHardInfo
+
 class ServerNICInfo(ServerBaseInfo):
     def __init__(self,data,minion):
         super(ServerNICInfo,self).__init__(data,minion)

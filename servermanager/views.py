@@ -223,7 +223,7 @@ def ChangeAsset(request,id):
 
 
 @login_required()
-@permission_required('servermanager.change_server',raise_exception=True)
+@permission_required('servermanager.change_assets',raise_exception=True)
 def ChangeServer(request,id):
     usersession=request.session.get('user_id')
     username = request.session.get('user_name')
@@ -306,6 +306,7 @@ def ChangeServer(request,id):
              'NicData':NicData,
              'CpuData':CpuData}
         return render(request,'servermanager/servers_change.html',ret)
+
 
 
 @login_required()
