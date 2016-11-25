@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+        <style>
+            body {
+                color: #111;
+            }
+
+            #terminal-container {
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            #terminal-container a {
+                color: #fff;
+            }
+        </style>
+
+
+<div id="terminal-container" data-id="{{containerId}}" ></div>
+        <script>
+            container = document.getElementById('terminal-container');
+            var term = new Terminal(),
+                //url = 'ws://192.168.2.232:2375/containers/4d0c7ed3aa0d/attach/ws?logs=0&stream=1&stdin=1&stdout=1&stderr=1',
+                url = 'ws://192.168.4.223:8888/docker/getSocket/'+$('#terminal-container').attr('data-id')
+                socket = new WebSocket(url);
+
+            term.open(document.getElementById('terminal-container'));
+            term.on('data', function (data) {
+                socket.send(data);
+            });
+
+            socket.onmessage = function (e) {
+                term.write(e.data);
+            }
+        </script>
+
+{% endblock %}
