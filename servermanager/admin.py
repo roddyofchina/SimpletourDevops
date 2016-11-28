@@ -47,13 +47,17 @@ class AssetsAdmin(ImportExportModelAdmin):
 
 class CpuModels(admin.ModelAdmin):
     list_display = ('id','uuid','cpu_mhz','model','Architecture')
+    list_display_links = ('uuid',)
+    list_editable = ('cpu_mhz',)
 
 class DiskModels(admin.ModelAdmin):
     search_fields = ['parent_sn']
     list_display = ('id','uuid', 'capacity','disk_type','Firm')
 
 class NicModels(admin.ModelAdmin):
+    search_fields = ('ip',)
     list_display = ('id','uuid','name','ip','model')
+    list_display_links = ('uuid',)
 
 class SoftwareModels(admin.ModelAdmin):
     list_display = ('id','name','version')
@@ -65,18 +69,24 @@ class DeviceTypeModels(admin.ModelAdmin):
 class BusinessModels(admin.ModelAdmin):
     list_display = ('id','name',)
     search_fields = ('name',)
+    list_editable = ('name',)
 
 class ProviderModels(admin.ModelAdmin):
     list_display = ('id','provider_name', 'address', 'contacts', 'phone')
 
-
 class ServerModels(admin.ModelAdmin):
-
     list_display = ('id','Assets','Firm','cpu','hostname','saltid','mem','swap','system','version','platform')
+    list_display_links = ('Assets',)
+
     def get_idc(self, obj):
         return obj.Assets.IDC
     get_idc.short_description = '资产'
+
     filter_horizontal = ('disk','nic','software')
+
+class IdcModels(admin.ModelAdmin):
+    search_fields = ('idc_name',)
+    list_display = ('idc_name','address','floor','contacts','phone')
 
 
 admin.site.register(Assets,AssetsAdmin)
@@ -85,7 +95,7 @@ admin.site.register(DeviceType,DeviceTypeModels)
 admin.site.register(Business,BusinessModels)
 admin.site.register(Cpu,CpuModels)
 admin.site.register(Disk,DiskModels)
-admin.site.register(IDC)
+admin.site.register(IDC,IdcModels)
 admin.site.register(Software,SoftwareModels)
 admin.site.register(NIC,NicModels)
 admin.site.register(Provider,ProviderModels)

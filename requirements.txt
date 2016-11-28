@@ -8,4 +8,5 @@ docker-py
 supervisor
 uwsgi
 redis
+dwebsocket
 

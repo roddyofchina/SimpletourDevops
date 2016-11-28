@@ -152,7 +152,7 @@
                                                         {% endif%}
                                                             <button data-id="{{container.containerID}}" id="restart"  data-type="restart" class="btn btn-xs btn-danger change">重启</button>
 
-                                                        <button type="button" class="btn btn-xs btn-info">控制台</button>
+                                                        <a href="{% url 'webSocket' container.containerID %}" class="btn btn-xs btn-info">控制台</a>
                                                         <a href="{% url 'DockerLogOutput' container.containerID %}"   class="btn btn-xs btn-success" >显示日志</a>
                                                         <button data-id="{{container.containerID}}" id="delete"  data-type="delete" class="btn btn-xs btn-danger change">删除</button>
                                                         <i data-id='status' class="glyphicon glyphicon-repeat"></i>

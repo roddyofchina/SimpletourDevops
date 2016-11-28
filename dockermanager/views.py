@@ -1,7 +1,9 @@
 #coding:utf8
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse,HttpResponseRedirect
-
+from django.http import StreamingHttpResponse
+from dwebsocket import accept_websocket,require_websocket
+import threading
 from django.http import HttpResponse
 from django.db.models import Q
 
@@ -402,6 +404,49 @@ def DeleteCeleryStatus(request,celeryid):
                 'status': str(task.info),  # this is the exception raised
             }
         return HttpResponse(json.dumps(response))
+
+@login_required()
+def webSocket(request,containerId):
+    usersession = request.session.get('user_id')
+    IP = DockerContainer.objects.get(containerID=containerId).hostip
+    PORT = DockerHost.objects.get(hostip=IP).port
+    containerId = containerId
+    return render(request,'dockermanager/websocket.html',locals())
+
+
+
+@accept_websocket
+def getsocket(request,containerId):
+    if request.is_websocket:
+        request.websocket.send('Welcome to Simpletour DevOps!!')
+        IP = DockerContainer.objects.get(containerID=containerId).hostip
+        PORT = DockerHost.objects.get(hostip=IP).port
+
+        docker_api = Dockerapi(IP, PORT)
+        try:
+            container = docker_api.dockerConnect.exec_create(container=containerId, cmd="/bin/bash", user='root',
+                                                                       tty=True,stdout=True,stderr=True,stdin=True,)
+            a = docker_api.dockerConnect.exec_start(container['Id'], stream=True, tty=True, detach=False,socket=True)
+            docker_api.dockerConnect.exec_resize(container['Id'], height=40, width=80)
+            for message in request.websocket:
+                if not message:
+                    break
+                a.send(message.encode('utf-8'))
+                request.websocket.send(a.recv(65535))
+        except:
+            request.websocket.send('主机无法连接!!')
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

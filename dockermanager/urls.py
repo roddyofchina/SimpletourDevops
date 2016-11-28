@@ -4,7 +4,7 @@ from dockermanager.views import (Dockercontainerlist,DockerHosts,DockerImages,Do
                                  DockerHostAdd,DockerHostDel,DockerHostEdit,DockerContainerDel,
                                  DockerContainerStop,DockerContainerStart,DockerContainerRestart,
                                  DockerImageDelete,DockerLogOutput,StartCeleryStatus,StopCeleryStatus,
-                                 RestartCeleryStatus,DeleteCeleryStatus)
+                                 RestartCeleryStatus,DeleteCeleryStatus,webSocket,getsocket)
 
 urlpatterns = [
     url(r'container/list/(\d+)$', Dockercontainerlist, name='Dockercontainerlist'),
@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'server/add/$', DockerHostAdd, name='DockerHostAdd'),
     url(r'server/del/(\d+)$',DockerHostDel,name='DockerHostDel'),
     url(r'server/edit/(\d+)$',DockerHostEdit,name='DockerHostEdit'),
+    url(r'webSocket/(\w+)$',webSocket,name='webSocket'),
+    url(r'getSocket/(\w+)$',getsocket,name='getsocket'),
 ]

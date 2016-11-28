@@ -6,7 +6,7 @@ from webapp.models import Suser
 
 '''设备类型表'''
 class DeviceType(models.Model):
-    name = models.CharField(max_length=128,blank=True,verbose_name=u'设备类型')
+    name = models.CharField(max_length=128,verbose_name=u'设备类型')
 
     def __unicode__(self):
         return self.name
@@ -22,12 +22,11 @@ class DeviceType(models.Model):
 
 '''IDC信息管理表'''
 class IDC(models.Model):
-    idc_name = models.CharField(max_length=128, blank=True, unique=True)
-    address = models.CharField(max_length=255, null=True,blank=True)
+    idc_name = models.CharField(u'IDC',max_length=128, unique=True)
+    address = models.CharField(u'地址',max_length=255, null=True,blank=True)
     floor = models.CharField(u'楼层',max_length=20,null=True,blank=True)
-    contacts = models.CharField(max_length=128, null=True,blank=True)
-    phone = models.CharField(max_length=20,null=True,blank=True)
-
+    contacts = models.CharField(u'联系人',max_length=128, null=True,blank=True)
+    phone = models.CharField(u'联系电话',max_length=20,null=True,blank=True)
 
     def __unicode__(self):
         return self.idc_name
@@ -40,7 +39,7 @@ class IDC(models.Model):
         )
 '''业务表'''
 class Business(models.Model):
-    name = models.CharField(max_length=128, blank=True, unique=True,verbose_name=u'业务名')
+    name = models.CharField(max_length=128,unique=True,verbose_name=u'业务名')
     memo = models.CharField(u'备注',max_length=64, blank=True)
 
     def __unicode__(self):
@@ -57,7 +56,7 @@ class Business(models.Model):
 
 '''提供商表'''
 class Provider(models.Model):
-    provider_name = models.CharField(max_length=128, blank=True, unique=True, verbose_name=u'提供商')
+    provider_name = models.CharField(max_length=128,  unique=True, verbose_name=u'提供商')
     address = models.CharField(max_length=255, blank=True, verbose_name=u'地址')
     contacts = models.CharField(max_length=128, blank=True, verbose_name=u'联系人')
     phone = models.CharField(max_length=20,blank=True, verbose_name=u'联系电话')
@@ -143,7 +142,7 @@ class Assets(models.Model):
 
 '''软件版本'''
 class Software(models.Model):
-    name = models.CharField(max_length=128, blank=True,verbose_name=u'软件名称')
+    name = models.CharField(max_length=128, verbose_name=u'软件名称')
     version = models.CharField(max_length=128,null=True, blank=True,verbose_name=u'版本')
     license = models.CharField(max_length=128,null=True, blank=True,verbose_name=u'序列号')
 
@@ -184,24 +183,22 @@ class Server(models.Model):
     software  = models.ManyToManyField('Software', blank=True,verbose_name=u'软件列表')
 
     #CPU
-    cpu = models.ForeignKey('Cpu',null=True,blank=True)
+    cpu = models.ForeignKey('Cpu',blank=True,null=True)
 
-    cpu_count = models.SmallIntegerField(u'cpu个数',blank=True)
+    cpu_count = models.SmallIntegerField(u'cpu个数',blank=True,default=0)
 
-
-    cpu_core_count = models.SmallIntegerField(u'cpu核数',blank=True)
+    cpu_core_count = models.SmallIntegerField(u'cpu核数',blank=True,default=0)
 
     #nic
-    nic = models.ManyToManyField('NIC', verbose_name=u'网卡列表')
+    nic = models.ManyToManyField('NIC', verbose_name=u'网卡列表',blank=True,null=True)
 
     #磁盘
-
     disk = models.ManyToManyField('Disk', verbose_name=u'硬盘',blank=True)
 
     #raid
     raid = models.CharField(max_length=128,null=True,blank=True,verbose_name=u'RAID级别')
 
-    saltid = models.CharField(max_length=128,null=True,blank=True,verbose_name=u'SaltID名')
+    saltid = models.CharField(max_length=128,verbose_name=u'SaltID名')
 
     create_time = models.DateTimeField(blank=True, auto_now_add=True)
 
@@ -226,9 +223,9 @@ class Server(models.Model):
 
         )
 class Cpu(models.Model):
-    uuid = models.CharField(u'UUID号',max_length=64,blank=True)
+    uuid = models.CharField(u'UUID号',max_length=64)
 
-    parent_sn = models.CharField(max_length=128,blank=True, verbose_name=u'服务器SN')
+    parent_sn = models.CharField(max_length=128, verbose_name=u'服务器SN')
 
     #cpu架构
     Architecture = models.CharField(max_length=128,blank=True,null=True,verbose_name=u'架构')
@@ -260,11 +257,11 @@ class Cpu(models.Model):
         verbose_name = u'CPU'
         verbose_name_plural = u'CPU'
 class Disk(models.Model):
-    name  = models.CharField(max_length=128,blank=True,verbose_name=u'硬盘名称')
+    name  = models.CharField(max_length=128,verbose_name=u'硬盘名称')
 
-    uuid = models.CharField(max_length=128,blank=True,unique=True)
+    uuid = models.CharField(max_length=128,unique=True)
 
-    parent_sn = models.CharField(max_length=128,blank=True,verbose_name=u'服务器SN')
+    parent_sn = models.CharField(max_length=128,verbose_name=u'服务器SN')
 
     #产商
     Firm = models.CharField(max_length=128,null=True, blank=True,verbose_name=u'制造商')
@@ -296,8 +293,8 @@ class Disk(models.Model):
         verbose_name = u'硬盘'
         verbose_name_plural = u'硬盘'
 class NIC(models.Model):
-    uuid = models.CharField(u'UUID号',max_length=128,blank=True,)
-    parent_sn = models.CharField(max_length=128,blank=True,verbose_name=u'服务器SN')
+    uuid = models.CharField(u'UUID号',max_length=128,)
+    parent_sn = models.CharField(max_length=128,verbose_name=u'服务器SN')
     name = models.CharField(u'网卡名称', max_length=128,)
     model = models.CharField(max_length=128,blank=True,null=True,verbose_name=u'型号')
     ip = models.GenericIPAddressField(max_length=128,null=False,default='',verbose_name=u'IP地址')
