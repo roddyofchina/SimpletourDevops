@@ -45,8 +45,8 @@ def Login(request):
             password = request.POST['password']
             user = authenticate(username=username, password=password)
             #设置用户的会话过期时间,如果没有勾记住我，默认关闭浏览器就要重新登录
-            #if not request.POST.get('remember_me', None):
-            #    request.session.set_expiry(0)
+            if not request.POST.get('remember_me', None):
+                request.session.set_expiry(0)
             if user is not None:
                 if user.is_active:
                     login(request,user)
