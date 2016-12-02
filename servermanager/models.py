@@ -190,7 +190,7 @@ class Server(models.Model):
     cpu_core_count = models.SmallIntegerField(u'cpu核数',blank=True,default=0)
 
     #nic
-    nic = models.ManyToManyField('NIC', verbose_name=u'网卡列表',blank=True,null=True)
+    nic = models.ManyToManyField('NIC', verbose_name=u'网卡列表',blank=True)
 
     #磁盘
     disk = models.ManyToManyField('Disk', verbose_name=u'硬盘',blank=True)

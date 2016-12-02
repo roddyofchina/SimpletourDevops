@@ -80,26 +80,25 @@
             </ul>
           </li>
             {%endif%}
-          <!--
+
           <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-pencil-alt"></i><span> SALT管理 </span></a>
             <ul class="list-unstyled">
-              <li><a href="form-elements.html">软件部署</a></li>
-              <li><a href="form-advanced.html">配置管理</a></li>
-              <li><a href="form-validation.html">批量执行</a></li>
+              <li><a href="#">Master管理</a></li>
+              <li><a href="{% url 'KeyList' %}">keys管理</a></li>
+              <li><a href="{% url 'MinionStatus' %}">minion状态</a></li>
+              <li><a href="{% url 'SoftInstall' %}">软件部署</a></li>
+              <li><a href="{% url 'JobList' %}">Job管理</a></li>
+              <li><a href="{% url 'RemoteCmd' %}">批量执行</a></li>
             </ul>
-          </li>-->
-          <!--
-          <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu-alt"></i><span> 应用更新 </span></a>
-            <ul class="list-unstyled">
-              <li><a href="tables-basic.html">WEB应用更新</a></li>
-              <li><a href="tables-datatable.html">jar包更新</a></li>
-              <li><a href="tables-editable.html">Nginx操作</a></li>
-            </ul>
-
-
           </li>
-          -->
 
+
+          <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu-alt"></i><span> 批量管理 </span></a>
+            <ul class="list-unstyled">
+              <li><a href="#">批量命令执行</a></li>
+              <li><a href="#">批量文件分发</a></li>
+            </ul>
+          </li>
 
           <li > <a href="/admin" class="waves-effect"><i class="ti-image"></i><span> 系统后台 </span></a>
         </ul>
