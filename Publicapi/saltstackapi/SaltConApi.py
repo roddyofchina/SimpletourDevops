@@ -116,14 +116,14 @@ class SaltApi(object):
         return ret
 
     #获取JOB ID的详细执行结果
-    def SaltJob(self,jid=''):
-        if jid:
-            parurl = '/jobs/'+jid
-        else:
-            parurl = '/jobs'
-        res = self.PostRequest(None,parurl)
-        # print res
-        return res
+    def runner(self,arg):
+        ''' Return minion status '''
+        params = {'client': 'runner', 'fun': arg }
+        obj = urllib.urlencode(params)
+        content = self.PostRequest(obj)
+        jid = content['return'][0]
+        return jid
+
 
     #获取events
     def SaltEvents(self):
@@ -156,8 +156,11 @@ if __name__ == '__main__':
     #print salt.SaltRun(client='runner', fun='fileserver.envs')
     #a=sorted(salt.SaltRun(client='runner',fun='fileserver.envs')['return'][0])
     #print a
-    a,b,c,d =salt.List_all_keys()
-    print a,b,c,d
+    jids = salt.runner("jobs.list_jobs")
+    for i,v in jids.items:
+        print i,v
+    #a,b,c,d =salt.List_all_keys()
+    #print a,b,c,d
 
     #funs = ['doc.runner', 'doc.wheel', 'doc.execution']
     #for fun in funs:

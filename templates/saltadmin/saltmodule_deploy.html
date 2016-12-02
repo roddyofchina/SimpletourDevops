@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-box">
+                <h4 class="m-t-0 header-title"><b>模块部署</b></h4>
+                <p class="text-muted m-b-30 font-13">
+                    <strong>以下是可提供的saltstack sls 模块部署列表，部署结果实时展示</strong>
+                </p>
+
+                <div class="row">
+
+                   <div class="col-md-8" >
+                        <form class="form-horizontal" role="form" " >
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Minion组</label>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-6">
+                                        <select class="form-control">
+                                            <option>web</option>
+                                            <option>mysql</option>
+                                            <option>nginx</option>
+                                            <option>db2</option>
+                                            <option>test</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">目标主机</label>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-6">
+                                      <input type="text" class="form-control" placeholder="输入命标主机minion ID">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Helping text</label>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-2">
+                                        <div class="checkbox checkbox-pink">
+                                            <input id="checkbox1" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2" data-parsley-id="69">
+                                            <label for="checkbox1"> And this </label>
+                                        </div>
+                                    </div>
+                                      <div class="col-sm-2">
+                                        <div class="checkbox checkbox-pink">
+                                            <input id="checkbox1" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2" data-parsley-id="69">
+                                            <label for="checkbox1"> And this </label>
+                                        </div>
+                                    </div>
+                                      <div class="col-sm-2">
+                                        <div class="checkbox checkbox-pink">
+                                            <input id="checkbox1" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2" data-parsley-id="69">
+                                            <label for="checkbox1"> And this </label>
+                                        </div>
+                                    </div>
+                                      <div class="col-sm-2">
+                                        <div class="checkbox checkbox-pink">
+                                            <input id="checkbox1" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2" data-parsley-id="69">
+                                            <label for="checkbox1"> And this </label>
+                                        </div>
+                                    </div>
+                                      <div class="col-sm-2">
+                                        <div class="checkbox checkbox-pink">
+                                            <input id="checkbox1" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2" data-parsley-id="69">
+                                            <label for="checkbox1"> And this </label>
+                                        </div>
+                                    </div>
+                                      <div class="col-sm-2">
+                                        <div class="checkbox checkbox-pink">
+                                            <input id="checkbox1" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2" data-parsley-id="69">
+                                            <label for="checkbox1"> And this </label>
+                                        </div>
+                                    </div>
+                                      <div class="col-sm-2">
+                                        <div class="checkbox checkbox-pink">
+                                            <input id="checkbox1" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2" data-parsley-id="69">
+                                            <label for="checkbox1"> And this </label>
+                                        </div>
+                                    </div>
+                                      <div class="col-sm-2">
+                                        <div class="checkbox checkbox-pink">
+                                            <input id="checkbox1" type="checkbox" data-parsley-multiple="groups" data-parsley-mincheck="2" data-parsley-id="69">
+                                            <label for="checkbox1"> And this </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-8 m-t-15">
+                                    <button type="submit" class="btn btn-primary">
+                                        部署
+                                    </button>
+                                    <button type="reset" class="btn btn-default m-l-5">
+                                        重置
+                                    </button>
+                                </div>
+							</div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="row">
+         <div class="col-sm-12">
+            <p><b>实时结果输出:</b></p>
+
+		 </div>
+        <div class="col-md-12">
+            <div class="card-box" id="result" style="OVERFLOW-Y: auto; OVERFLOW-X:hidden;background-color: #1c1c1c;height: 600px">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

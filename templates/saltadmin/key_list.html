@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="container">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">SALT 管理</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="{% url 'SaltMasterList' %}">SaltStack Master管理</a>
+                    </li>
+
+                    <li class="active">
+                        SaltStack Master列表
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+             <div class="col-sm-10">
+                   <div class="card-box">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="panel-group" id="accordion-test-2">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion-test-2" href="#collapseOne-2" aria-expanded="true" class="">
+                                                    已经接受的Key <span class="badge badge-warning" style="margin-top: 0;background-color: #ffbd4a;">20</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+
+                                        <div id="collapseOne-2" class="panel-collapse collapse in" >
+                                            <div class="panel-body">
+                                                <table class="table">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Minion</th>
+															<th>saltserver</th>
+															<th>状态</th>
+                                                            <th>操作</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<th scope="row">1</th>
+															<td>192.168.2.5</td>
+															<td>192.168.20.1</td>
+															<td>ACCEPT</td>
+                                                            <td>
+                                                                <a href="#" class="btn btn-xs btn-info">修改</a>
+                                                                <button  class="btn btn-xs btn-danger" >删除</button>
+                                                            </td>
+														</tr>
+													</tbody>
+												</table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion-test-2" href="#collapseTwo-2" class="collapsed" aria-expanded="false">
+                                                    未接受的Key <span class="badge badge-warning" style="margin-top: 0;background-color: #34d3eb;">0</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseTwo-2" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                 <table class="table">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Minion</th>
+															<th>saltserver</th>
+															<th>状态</th>
+                                                            <th>操作</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<th scope="row">1</th>
+															<td>192.168.2.5</td>
+															<td>192.168.20.1</td>
+															<td>ACCEPT</td>
+                                                            <td>
+                                                                <a href="#" class="btn btn-xs btn-info">修改</a>
+                                                                <button  class="btn btn-xs btn-danger" >删除</button>
+                                                            </td>
+														</tr>
+													</tbody>
+												</table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion-test-2" href="#collapseThree-2" class="" aria-expanded="true">
+                                                   未被允许的key <span class="badge badge-warning" style="margin-top: 0;background-color: #5fbeaa;">0</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseThree-2" class="panel-collapse collapse"  aria-expanded="false" class="collapsed">
+                                            <div class="panel-body">
+                                                <table class="table">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Minion</th>
+															<th>saltserver</th>
+															<th>状态</th>
+                                                            <th>操作</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<th scope="row">1</th>
+															<td>192.168.2.5</td>
+															<td>192.168.20.1</td>
+															<td>ACCEPT</td>
+                                                            <td>
+                                                                <a href="#" class="btn btn-xs btn-info">修改</a>
+                                                                <button  class="btn btn-xs btn-danger" >删除</button>
+                                                            </td>
+														</tr>
+													</tbody>
+												</table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion-test-2" href="#collapseFive-2" aria-expanded="false" class="collapsed" >
+                                                   已拒绝的Key <span class="badge badge-danger" style="margin-top: 0;background-color: #f05050;">32</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+
+                                        <div id="collapseFive-2" class="panel-collapse collapse" >
+                                            <div class="panel-body">
+                                                <table class="table">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Minion</th>
+															<th>saltserver</th>
+															<th>状态</th>
+                                                            <th>操作</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<th scope="row">1</th>
+															<td>192.168.2.5</td>
+															<td>192.168.20.1</td>
+															<td>ACCEPT</td>
+                                                            <td>
+                                                                <a href="#" class="btn btn-xs btn-info">修改</a>
+                                                                <button  class="btn btn-xs btn-danger" >删除</button>
+                                                            </td>
+														</tr>
+													</tbody>
+												</table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+              </div>
+        </div>
+
+{% endblock %}

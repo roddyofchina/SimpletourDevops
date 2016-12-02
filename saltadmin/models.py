@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-
 class SaltServer(models.Model):
     Role = (
     ('Master', 'Master'),
@@ -22,15 +21,15 @@ class SaltServer(models.Model):
         verbose_name_plural = u'Salt服务器列表'
 
 class Module(models.Model):
-    client = models.CharField(max_length=20,default='execution',verbose_name=u'Salt模块类型')
     name = models.CharField(max_length=20,verbose_name=u'Salt模块名称')
     def __unicode__(self):
         return "%s - %s "% (self.client,self.name)
     class Meta:
         verbose_name = u'Salt模块'
         verbose_name_plural = u'Salt模块列表'
-        unique_together = ("client", "name")
+        unique_together = ("name",)
 
+'''
 class Command(models.Model):
     cmd = models.CharField(max_length=100,verbose_name=u'Salt命令')
     doc = models.TextField(max_length=2000,blank=True,verbose_name=u'帮助文档')
@@ -43,6 +42,7 @@ class Command(models.Model):
         verbose_name = u'Salt命令'
         verbose_name_plural = u'Salt命令列表'
         unique_together = ("module", "cmd")
+'''
 
 class Minions(models.Model):
     Status = (
@@ -54,8 +54,6 @@ class Minions(models.Model):
     )
     minion = models.CharField(max_length=50,verbose_name=u'客户端')
     saltserver = models.ForeignKey(SaltServer,verbose_name=u'所属Salt服务器')
-    grains = models.TextField(max_length=500,blank=True,verbose_name=u'Grains信息')
-    pillar = models.TextField(max_length=500,blank=True,verbose_name=u'Pillar信息')
     status = models.CharField(choices=Status,max_length=20,default='Unknown',verbose_name=u'在线状态')
     create_date=models.DateTimeField(auto_now_add=True,verbose_name=u'创建时间')
 
@@ -65,7 +63,7 @@ class Minions(models.Model):
     class Meta:
         verbose_name = u'Salt客户端'
         verbose_name_plural = u'Salt客户端列表'
-        unique_together = ("minion", "saltserver")
+
 
 class MinionStatus(models.Model):
     minion = models.ForeignKey(Minions)
@@ -76,6 +74,17 @@ class MinionStatus(models.Model):
     )
 
     minion_status = models.CharField(choices=Status,max_length=20,default='Unknown',verbose_name=u'在线状态')
+
+class MinionGroup(models.Model):
+    groupname = models.CharField(u'Minion组',max_length=50,default='default')
+    minions = models.ManyToManyField(Minions,verbose_name=u'Minions',blank=True)
+
+    def __unicode__(self):
+        return self.groupname
+
+    class Meta:
+        verbose_name = u'Minion组'
+        verbose_name_plural = u'Minion组'
 
 class CmdRunLog(models.Model):
     user=models.CharField(max_length=30)
@@ -90,26 +99,21 @@ class CmdRunLog(models.Model):
         verbose_name = u'命令执行日志'
         verbose_name_plural = u'命令执行日志'
 
-class AppList(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __unicode__(self):
-        return self.name
-    class Meta:
-        verbose_name = u'salt应用管理'
-        verbose_name_plural = u'salt应用管理'
-
-class AppDeployLog(models.Model):
+class ModuleDeployLog(models.Model):
     user=models.CharField(max_length=50)
     time=models.DateTimeField()
     target=models.CharField(max_length=100)
     application=models.CharField(max_length=100)
-    mapping=models.CharField(max_length=20)
+    #成功的主机
     success_hosts=models.CharField(max_length=500)
+    #失败的主机
     failed_hosts=models.CharField(max_length=500)
+    #执行总共结果
     total=models.IntegerField()
+    #执行过程
     log=models.TextField()
+    #持续时间
     duration=models.CharField(max_length=500)
     class Meta:
         verbose_name = u'软件部署'
-        verbose_name = u'软件部署'
+        verbose_name_plural = u'软件部署'

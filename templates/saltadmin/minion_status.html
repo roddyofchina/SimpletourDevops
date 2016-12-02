@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">SALT 管理</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="{% url 'SaltMasterList' %}">Minion 状态管理</a>
+                    </li>
+                    <li class="active">
+                        SaltStack Minion Status 列表
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-10">
+
+                <div class="card-box">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 class="m-t-0 header-title"><b>Minion 列表</b></h4>
+                            <div class="p-20">
+                                <table class="table table-striped m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Minion</th>
+                                            <th>saltmaster</th>
+                                            <th>UP/Offline</th>
+                                            <th>grains信息</th>
+                                            <th>pillar信息</th>
+                                            <td>操作</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for minion in SaltMinionData%}
+                                        <tr>
+                                            <th scope="row" data-id="{{minion.id}}">{{minion.id}}</th>
+                                            <td>{{minion.minion}}</td>
+                                            <td>{{minion.minion.saltserver}}</td>
+                                            <td>{{minion.minion_status}}</td>
+                                            <td><a href="#">view</a></td>
+                                            <td><a href="#">view</a></td>
+                                             <td>
+                                                 <a href="#" class="btn btn-xs btn-info">修改</a>
+                                                 <button  class="btn btn-xs btn-danger" >删除</button>
+                                             </td>
+                                        </tr>
+                                        {% endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock%}

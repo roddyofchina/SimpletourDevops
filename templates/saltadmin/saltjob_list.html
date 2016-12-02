@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">SALT 管理</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="{% url 'JobList' %}">Job 管理</a>
+                    </li>
+                    <li class="active">
+                        SaltStack Jobs 列表
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-10">
+
+                <div class="card-box">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 class="m-t-0 header-title"><b>Jobs 列表</b></h4>
+                            <div class="p-20">
+                                <table class="table table-striped m-0">
+                                    <thead>
+                                        <tr>
+
+                                            <th>jid</th>
+                                            <th>arg</th>
+                                            <th>执行模块</th>
+                                            <th>开始时间</th>
+                                            <th>target</th>
+                                            <th>用户</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <th scope="row"><a href="#"> 20161203012833711651</a></th>
+                                            <td></td>
+                                            <td>test.ping</td>
+                                            <td>2016, Dec 03 01:28:33.711651</td>
+                                            <td>
+                                                192.168.2.147<br>
+                                                192.168.2.148<br>
+                                            </td>
+                                            <td>root</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock%}

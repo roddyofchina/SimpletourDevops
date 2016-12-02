@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title">SALT 管理</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="{% url 'SaltMasterList' %}">SaltStack Master管理</a>
+                    </li>
+
+                    <li class="active">
+                        SaltStack Master列表
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="row">
+                        <div class="col-sm-12">
+                            <a  href="#"><button class="btn btn-primary " type="button">添加Master</button></a>
+                        </div>
+                    </div>
+                <br>
+                <div class="card-box">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 class="m-t-0 header-title"><b>Master列表</b></h4>
+                            <div class="p-20">
+                                <table class="table table-striped m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>url</th>
+                                            <th>用户名</th>
+                                            <th>角色</th>
+                                            <td>操作</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for salt in SaltMasterData%}
+                                        <tr>
+                                            <th scope="row" data-id="{{salt.id}}">{{salt.id}}</th>
+                                            <td>{{salt.url}}</td>
+                                            <td>{{salt.username}}</td>
+                                            <td>{{salt.role}}</td>
+                                             <td>
+                                                 <a href="#" class="btn btn-xs btn-info">修改</a>
+                                                 <button  class="btn btn-xs btn-danger" >删除</button>
+                                             </td>
+                                        </tr>
+                                        {% endfor%}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock%}

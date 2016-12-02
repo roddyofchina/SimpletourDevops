@@ -12,6 +12,16 @@
 <link rel="stylesheet" href="/static/assets/css/xterm.css" />
 <link rel="stylesheet" href="/static/assets/css/style.css" />
 <script src="/static/assets/js/xterm.js"></script>
+    <style>
+        #sidebar-menu ul ul a.hover {
+           color: #fff;
+            background-color: #5fbeaa;
+        }
+        #sidebar-menu ul ul a.hover:hover {
+           color: #fff;
+            background-color: #5fbeaa;
+        }
+    </style>
 {% include 'tempdir/head_css.html' %}
 
 {% include 'tempdir/head_script.html'%}
@@ -64,7 +74,7 @@
             <li> <a href="{% url 'index' %}" class="waves-effect "><i class="ti-home"></i> <span> 系统首页 </span></a> </li>
             {%endif%}
             {% if perms.servermanager.assets_index_view %}
-                <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu"></i> <span>资产管理</span> </a>
+                <li class="has_sub" id="index"> <a href="#" class="waves-effect"><i class="ti-menu"></i> <span>资产管理</span> </a>
                 <ul class="list-unstyled">
                   <li><a href="{% url 'AssetsLists' 1  %}">资产表管理</a></li>
                   <li><a href="{% url 'ServerList' 1  %}">服务器列表</a></li>
@@ -83,15 +93,14 @@
 
           <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-pencil-alt"></i><span> SALT管理 </span></a>
             <ul class="list-unstyled">
-              <li><a href="#">Master管理</a></li>
+              <li><a href="{% url 'SaltMasterList' %}">Master管理</a></li>
               <li><a href="{% url 'KeyList' %}">keys管理</a></li>
-              <li><a href="{% url 'MinionStatus' %}">minion状态</a></li>
-              <li><a href="{% url 'SoftInstall' %}">软件部署</a></li>
+              <li><a href="{% url 'Minion_Status' %}">minion状态</a></li>
+              <li><a href="{% url 'SoftInstall' %}">模块部署</a></li>
               <li><a href="{% url 'JobList' %}">Job管理</a></li>
               <li><a href="{% url 'RemoteCmd' %}">批量执行</a></li>
             </ul>
           </li>
-
 
           <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu-alt"></i><span> 批量管理 </span></a>
             <ul class="list-unstyled">
@@ -164,5 +173,17 @@
   </div>-->
 </div>
 {% include  "tempdir/foot_script.html" %}
+
+<script>
+    $(document).ready(function() {
+        var pathname = document.location.pathname;
+
+        $('#sidebar-menu .list-unstyled a').each(function(k,value) {
+            if($(value).attr('href') == pathname) {
+                $(value).addClass('hover').parents('.has_sub').find('.waves-effect').addClass('subdrop').next('.list-unstyled').css('display','block');
+            }
+        })
+    })
+</script>
 </body>
 </html>
