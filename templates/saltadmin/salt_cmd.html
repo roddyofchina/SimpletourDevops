@@ -2,6 +2,11 @@
 
 {% block content %}
 
+<link href="/static/assets/plugins/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+<link href="/static/assets/plugins/select2/select2.css" rel="stylesheet" type="text/css" />
+<link href="/static/assets/plugins/multiselect/css/multi-select.css"  rel="stylesheet" type="text/css" />
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -14,17 +19,17 @@
                 <div class="row">
 
                    <div class="col-md-8" >
-                        <form class="form-horizontal" role="form">
+                        <form class="form-horizontal" role="form" >
+                            {% csrf_token  %}
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Minion组</label>
                                 <div class="col-sm-10">
                                     <div class="col-sm-6">
-                                        <select class="form-control">
-                                            <option>web</option>
-                                            <option>mysql</option>
-                                            <option>nginx</option>
-                                            <option>db2</option>
-                                            <option>test</option>
+                                        <select class="form-control" id="minion_group" name="minion_group">
+                                            <option value="">-----select------</option>
+                                            {% for group in GroupData %}
+                                            <option value="{{group.id}}">{{group.groupname}}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                 </div>
@@ -32,23 +37,27 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">目标主机</label>
                                 <div class="col-sm-10">
-                                    <div class="col-sm-6">
-                                      <input type="text" class="form-control" placeholder="输入命标主机minion ID">
+
+                                    <div class="col-sm-6" id="HOST">
+                                          <select class="select2 select2-multiple" multiple="multiple" multiple data-placeholder="选择组中的minion">
+
+                                          </select>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">CMD命令</label>
                                 <div class="col-sm-10">
                                     <div class="col-sm-6">
-                                            <textarea required="" class="form-control" data-parsley-id="50"></textarea>
+                                            <textarea required="" class="form-control" name="cmd" data-parsley-id="50"></textarea>
                                         </div>
                                     </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-4 col-sm-8 m-t-15">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="button" onclick="Exec()" class="btn btn-primary">
                                         确认
                                     </button>
                                     <button type="reset" class="btn btn-default m-l-5">
@@ -70,13 +79,136 @@
 
 		 </div>
         <div class="col-md-12">
-            <div class="card-box" id="result" style="OVERFLOW-Y: auto; OVERFLOW-X:hidden;background-color: #1c1c1c;height: 600px">
+            <div class="card-box" id="cmd_result" style="OVERFLOW-Y: auto; height:660px;color:#A6FFA6;  OVERFLOW-X:hidden;background-color: black;">
 
             </div>
 
         </div>
     </div>
+
+
+
 </div>
+
+
+<script src="/static/assets/js/json.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/multiselect/js/jquery.multi-select.js"></script>
+<script src="/static/assets/plugins/select2/select2.min.js" type="text/javascript"></script>
+<script src="/static/assets/plugins/bootstrap-select/dist/js/bootstrap-select.min.js" type="text/javascript"></script>
+
+
+<script>
+
+    var hosts = {{ groupall | safe}};
+
+    jQuery(document).ready(function(){
+        $(".select2").select2();
+
+        $('#minion_group').change(function() {
+            var $this = $(this);
+            var destinationHost = [];
+
+            hosts.forEach(function (host) {
+                if($this.val() == host.type) {
+                    destinationHost = host.list;
+                }
+            });
+            var optionsHtml = '';
+            destinationHost.forEach(function(host) {
+                optionsHtml += '<option value="'+host.id+'">'+host.text+'</option>'
+            });
+            var selectHtml = '<select class="select2 select2-multiple" name="minion" multiple="multiple" multiple data-placeholder="选择组中的minion">' +
+                               optionsHtml + '</select>';
+            $('#HOST').html('');
+            $('#HOST').append(selectHtml);
+            $(".select2").select2();
+        });
+
+    });
+
+</script>
+
+
+<script>
+    var timer;
+    function Exec(){
+        if($('#minion_group').val() == ''){
+            alert("选择Minion组!!!!");
+
+        };
+
+        $.ajax({
+            method: 'post',
+            dataType:'json',
+            data:$('.form-horizontal').serialize(),
+            url: "{% url 'RemoteCmd' %}",
+            success: function (data) {
+                var jid = data.jid;
+                var minion = data.minion;
+                var savelogid = data.savelogid;
+                document.getElementById("cmd_result").innerHTML='命令正在执行......</br>';
+                //timer = setInterval(function() {
+                cmd_result(jid,minion,savelogid);
+                //},5000);
+            },
+            error: function () {
+
+            }
+        })
+    }
+
+    function cmd_result(jid,minion,savelogid) {
+        $.ajax({
+            method: 'get',
+            dataType: 'json',
+            data: {
+                'minion':minion,
+                'savelogid':savelogid,
+            },
+            url: "/salt/cmdresult/" + jid,
+            
+            success: function (data) {
+                console.log(data);
+
+                //clearInterval(timer);
+                //获取minion信息然后作遍历查询
+                var minions = data.minion.split(',')
+                var objresult = document.getElementById("cmd_result");
+                for (var v=0;v<minions.length;v++){
+
+                    results_html ='</br>'+minions[v]+'</br>';
+                    results_html += new Array(80).join("#") + '</br>';
+
+                    var result = data.resultdata[minions[v]];
+
+                    if (typeof(result) == 'undefined'){
+
+                        results_html += "\t" + 'None';
+                        objresult.innerHTML += results_html;
+
+                    }else{
+                        var newResult = result.split('\n');
+
+                        for (var i=0;i<newResult.length; i++){
+                            NewResult = newResult[i] + '</br>';
+                            results_html +=(NewResult);
+                            //cmd_result.text= formatJson(data,true);
+                        };
+                        objresult.innerHTML += results_html;
+                    }
+
+                }
+            },
+            error: function () {
+            }
+        })
+
+    }
+
+
+</script>
+
+
 
 
 {% endblock %}

@@ -24,7 +24,7 @@
             <div class="col-sm-10">
                 <div class="row">
                         <div class="col-sm-12">
-                            <a  href="#"><button class="btn btn-primary " type="button">添加Master</button></a>
+                           <button class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#con-close-modal">添加Master</button>
                         </div>
                     </div>
                 <br>
@@ -52,7 +52,7 @@
                                             <td>{{salt.username}}</td>
                                             <td>{{salt.role}}</td>
                                              <td>
-                                                 <a href="#" class="btn btn-xs btn-info">修改</a>
+                                                 <button  data-toggle="modal" data-target="#con-update-modal" class="btn btn-xs btn-info">修改</button>
                                                  <button  class="btn btn-xs btn-danger" >删除</button>
                                              </td>
                                         </tr>
@@ -60,11 +60,131 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 </div>
+
+
+ <div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">添加Master</h4>
+            </div>
+            <form role="form" method="POST">
+                {% csrf_token  %}
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="field-3" class="control-label">URL</label>
+                            {{SaltServerForms.url}}
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">用户名</label>
+                                {{SaltServerForms.username}}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-2" class="control-label">密码</label>
+                               {{SaltServerForms.password}}
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="field-3" class="control-label">角色</label>
+                             {{SaltServerForms.role}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
+                <button type="submit"  class="btn btn-info waves-effect waves-light">添加</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div><!-- /.modal -->
+
+
+<div id="con-update-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">修改Master</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="field-3" class="control-label">URL</label>
+                            <input type="text" class="form-control" id="field-3" placeholder="http://127.0.0.1">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">用户名</label>
+                                <input type="text" class="form-control" id="field-1" placeholder="username">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-2" class="control-label">密码</label>
+                                <input type="password" class="form-control" id="field-2" placeholder="password">
+                            </div>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="field-3" class="control-label">角色</label>
+                            <input type="text" class="form-control" id="field-3" placeholder="Master">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-info waves-effect ">添加</button>
+            </div>
+        </div>
+    </div>
+</div><!-- /.modal -->
+
+
+<script>
+    function SaltMasterAdd() {
+        $.ajax({
+            url: '/',
+
+        })
+
+    }
+
+
+</script>
+
+
 {% endblock%}

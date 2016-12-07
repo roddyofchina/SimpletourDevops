@@ -9,6 +9,13 @@ from dockermanager.models import DockerHost
 from django.forms import ModelForm
 
 
+
+
+
+
+
+
+
 class DockerServerAdd(forms.Form):
     DockerServer=forms.ModelChoiceField(required=True,
                                         error_messages={'required': u'选择主机'},
@@ -24,7 +31,6 @@ class DockerServerAdd(forms.Form):
                                     error_messages={'required': u'请输入dockerhost port', 'invalid':u'port输入错误'},
                                     widget=forms.TextInput(attrs={'class': 'form-control','placeholder': '宿主机端口',
                                     }),)
-
 
 class DockerServerEdit(ModelForm):
     class Meta:

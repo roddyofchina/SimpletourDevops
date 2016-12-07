@@ -107,7 +107,6 @@ def Register(request):
 
 #激活用户函数
 def Activate(request, token):
-    print token
     s=TimestampSigner(django_settings.SECRET_KEY)
     email=s.unsign(token)
     try:
@@ -207,7 +206,6 @@ def Userinfo(reqest):
 @login_required()
 def SysrestUserpassword(request,id):
     restdata = {'data':'','regerror':'','id':int(id),'usersession': request.session.get('user_id')}
-    print restdata
     registerobj=forms.Register()
     restdata['data'] = registerobj
     if request.method == 'POST':

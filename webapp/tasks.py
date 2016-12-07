@@ -9,7 +9,7 @@ from celery import Celery
 from django.core.mail import send_mail
 from Publicapi.saltstackapi.SaltConApi import SaltApi
 from Publicapi.dockerapi.Manager import Dockerapi
-from dockermanager.Docker_Controler import GetDockerServerinfo,GetDockerImages
+from dockermanager.Docker_Controller import GetDockerServerinfo,GetDockerImages
 from datetime import timedelta
 from servermanager.models import *
 
@@ -20,6 +20,8 @@ from django.conf import settings
 
 from django.core import signals
 from django.db import close_old_connections
+from saltadmin.Minions_Controller import GetMinionConf
+
 
 # 取消信号关联，实现数据库长连接
 signals.request_finished.disconnect(close_old_connections)
@@ -41,6 +43,11 @@ celery.conf.update(
             'task': 'webapp.tasks.DockerServers',
             'schedule': timedelta(seconds=10)
         },
+
+        'minions': {
+            'task': 'webapp.tasks.GetMinionStatus',
+            'schedule': timedelta(seconds=30)
+        },
     }
 )
 
@@ -58,7 +65,6 @@ def sendmail(mail):
     send_mail(u"SimpletourDevops用户激活邮件",emailmessages,'923401910@qq.com',[mail['to'],],fail_silently=True)
     print "---------------------------------"
     return mail['to']
-
 
 @celery.task
 def resetpass(mail):
@@ -79,7 +85,6 @@ def SaltGrains(minion):
     data=salt.grainsall(minion['id'])
     print "------------------------"
     return data
-
 
 @celery.task()
 def StopContainer(docker):
@@ -125,6 +130,12 @@ def DockerServers():
     imagedata=GetDockerImages()
     print u"-----------------获取镜像列表成功---------------"
     return containerdata,imagedata
+
+@celery.task()
+def GetMinionStatus():
+    print u"---------------获取saltstackminion状态"
+    data = GetMinionConf()
+    print data
 
 #更新资产
 @celery.task()
@@ -297,7 +308,6 @@ def UpdateServerInfo(serverid):
     serverinfo['disk']=disklist
 
     return {'result': serverinfo}
-
 
 @celery.task()
 def DeleteContainer(IP,port,container):

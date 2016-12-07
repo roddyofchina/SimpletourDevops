@@ -20,10 +20,11 @@ class SaltServer(models.Model):
         verbose_name = u'Salt服务器'
         verbose_name_plural = u'Salt服务器列表'
 
+
 class Module(models.Model):
     name = models.CharField(max_length=20,verbose_name=u'Salt模块名称')
     def __unicode__(self):
-        return "%s - %s "% (self.client,self.name)
+        return "%s" % (self.name)
     class Meta:
         verbose_name = u'Salt模块'
         verbose_name_plural = u'Salt模块列表'
@@ -46,15 +47,13 @@ class Command(models.Model):
 
 class Minions(models.Model):
     Status = (
-    ('Unknown', 'Unknown'),
     ('Accepted', 'Accepted'),
-    ('Denied', 'Denied'),
     ('Unaccepted', 'Unaccepted'),
     ('Rejected', 'Rejected'),
     )
-    minion = models.CharField(max_length=50,verbose_name=u'客户端')
+    minion = models.CharField(max_length=50,verbose_name=u'客户端',unique=True)
     saltserver = models.ForeignKey(SaltServer,verbose_name=u'所属Salt服务器')
-    status = models.CharField(choices=Status,max_length=20,default='Unknown',verbose_name=u'在线状态')
+    status = models.CharField(choices=Status,max_length=20,default='Unknown',verbose_name=u'Key状态')
     create_date=models.DateTimeField(auto_now_add=True,verbose_name=u'创建时间')
 
     def __unicode__(self):
@@ -66,14 +65,12 @@ class Minions(models.Model):
 
 
 class MinionStatus(models.Model):
-    minion = models.ForeignKey(Minions)
-    Status = (
-    ('Unknown', 'Unknown'),
-    ('Offline', 'Offline'),
-    ('Online','Online')
-    )
-
-    minion_status = models.CharField(choices=Status,max_length=20,default='Unknown',verbose_name=u'在线状态')
+    minion = models.OneToOneField(Minions)
+    minion_status = models.CharField(max_length=20,verbose_name=u'在线状态')
+    # 上次检测时间
+    alive_time_last = models.DateTimeField(auto_now=True,null=True)
+    # 当前检测时间
+    alive_time_now = models.DateTimeField(auto_now=True,null=True)
 
 class MinionGroup(models.Model):
     groupname = models.CharField(u'Minion组',max_length=50,default='default')
@@ -86,14 +83,16 @@ class MinionGroup(models.Model):
         verbose_name = u'Minion组'
         verbose_name_plural = u'Minion组'
 
+
 class CmdRunLog(models.Model):
     user=models.CharField(max_length=30)
-    time=models.DateTimeField()
-    target=models.CharField(max_length=100)
-    mapping=models.CharField(max_length=50)
+    time=models.DateTimeField(auto_now_add=True,null=True)
+    target=models.CharField(max_length=500)
     cmd=models.CharField(max_length=500)
-    hosts=models.CharField(max_length=500)
     total=models.IntegerField()
+    runsuccess = models.IntegerField(default=0)
+    runerror = models.IntegerField(default=0)
+    runresult = models.TextField(max_length=65535,null=True,blank=True)
 
     class Meta:
         verbose_name = u'命令执行日志'

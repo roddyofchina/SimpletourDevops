@@ -8,11 +8,9 @@ from Assets_Module import ServerBaseInfo,ServerCPUInfo,ServerNICInfo,ServerDiskI
 
 
 class SaltApi(object):
-
     __token = ''
-    print __token
     def __init__(self,url,user,password):
-        print url,user,password
+
         self.__url = url
         self.__user= user
         self.__pass = password
@@ -48,6 +46,14 @@ class SaltApi(object):
         ret = content['return'][0]
         return ret
 
+    def pillarall(self,tgt):
+        params = {'client': 'local', 'tgt': tgt, 'fun': 'pillar.items'}
+        obj = urllib.urlencode(params)
+        content = self.PostRequest(obj)
+        ret = content['return'][0]
+        return ret
+
+
     def List_all_keys(self):
         params={'client':'wheel', 'fun':'key.list_all'}
         obj=urllib.urlencode(params)
@@ -62,11 +68,12 @@ class SaltApi(object):
 
     def shell_remote_execution(self,tgt,arg):
         ''' Shell command execution with parameters '''
-        params = {'client': 'local', 'tgt': tgt, 'fun': 'cmd.run', 'arg': arg, 'expr_form': 'list'}
+        params = {'client': 'local_async', 'tgt': tgt, 'fun': 'cmd.run', 'arg': arg, 'expr_form': 'list'}
         obj = urllib.urlencode(params)
         content = self.PostRequest(obj)
-        ret = content['return'][0]
-        return ret
+        print content
+        jid = content['return'][0]['jid']
+        return jid
 
 
 
@@ -125,6 +132,19 @@ class SaltApi(object):
         return jid
 
 
+    def salt_runner(self, jid):
+        '''
+        通过jid获取执行结果
+        '''
+
+        params = {'client': 'runner', 'fun': 'jobs.lookup_jid', 'jid': jid}
+        obj = urllib.urlencode(params)
+        content = self.PostRequest(obj)
+        print content
+        ret = content['return'][0]
+
+        return ret
+
     #获取events
     def SaltEvents(self):
         parurl = '/events'
@@ -134,7 +154,7 @@ class SaltApi(object):
 
     #接受KEY
     def AcceptKey(self, key_id):
-        params = {'client': 'wheel', 'fun': 'key.accept', 'match': key_id}
+        params = {'client': 'wheel', 'fun': 'key.accept', 'match': key_id, 'include_rejected': True, 'include_denied': True}
         obj = urllib.urlencode(params)
         content = self.PostRequest(obj)
         ret = content['return'][0]['data']['success']
@@ -148,19 +168,47 @@ class SaltApi(object):
         ret = content['return'][0]['data']['success']
         return ret
 
+    # 拒绝KEY
+    def RejectKey(self, key_id):
+        params = {'client': 'wheel', 'fun': 'key.reject', 'match': key_id,  'include_accepted': True, 'include_denied': True}
+        obj = urllib.urlencode(params)
+        content = self.PostRequest(obj)
+        ret = content['return'][0]['data']['success']
+        return ret
+
+
+    def Saltalive(self,tgt):
+        '''
+        salt主机存活检测
+        '''
+
+        params = {'client': 'local', 'tgt': tgt, 'fun': 'test.ping'}
+        obj = urllib.urlencode(params)
+        content = self.PostRequest(obj)
+        ret = content['return'][0]
+        return ret
+
 
 
 if __name__ == '__main__':
     salt=SaltApi('http://192.168.2.150:8000','roddy','roudy_123456')
-    #data=salt.shell_remote_execution('192.168.2.147','df -i')
+    #data=salt.Saltalive('*')
+    #print data
+    #host='192.168.2.147,192.168.2.148,'
+    #data=salt.shell_remote_execution(host, 'df -i')
+    #print data.
+    data = salt.salt_runner('20161207014031281090')
+    print data
+
     #print salt.SaltRun(client='runner', fun='fileserver.envs')
     #a=sorted(salt.SaltRun(client='runner',fun='fileserver.envs')['return'][0])
     #print a
-    jids = salt.runner("jobs.list_jobs")
-    for i,v in jids.items:
-        print i,v
+    #jids = salt.runner("jobs.list_jobs")
+    #for i,v in jids.items:
+    #    print i,v
     #a,b,c,d =salt.List_all_keys()
     #print a,b,c,d
+    #salt.shell_remote_execution
 
     #funs = ['doc.runner', 'doc.wheel', 'doc.execution']
     #for fun in funs:
@@ -173,7 +221,8 @@ if __name__ == '__main__':
     #server=ServerCPUInfo(data,u'192.168.2.147')
     #print server.ServerCPU()
 
-#    print salt.grains('server.192.168.2.70','zmqversion')
+    #data=salt.grainsall('192.168.2.147')
+    #print data
      #clientkey=salt.List_all_keys()['minions']
 #    Servers={}
 #    for i in clientkey:

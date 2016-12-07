@@ -40,6 +40,7 @@
                                             <td>操作</td>
                                         </tr>
                                     </thead>
+
                                     <tbody>
                                         {% for minion in SaltMinionData%}
                                         <tr>
@@ -47,10 +48,9 @@
                                             <td>{{minion.minion}}</td>
                                             <td>{{minion.minion.saltserver}}</td>
                                             <td>{{minion.minion_status}}</td>
-                                            <td><a href="#">view</a></td>
-                                            <td><a href="#">view</a></td>
-                                             <td>
-                                                 <a href="#" class="btn btn-xs btn-info">修改</a>
+                                            <td><button class="btn btn-xs btn-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="GetGrainsPillar({{minion.id}},'grains')" >view</button></td>
+                                            <td><button class="btn btn-xs btn-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="GetGrainsPillar({{minion.id}},'pillar')" >view</button></td>
+                                            <td>
                                                  <button  class="btn btn-xs btn-danger" >删除</button>
                                              </td>
                                         </tr>
@@ -58,11 +58,46 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 </div>
+
+
+<div class="modal fade bs-example-modal-lg" id="grains" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" >Grains信息</h4>
+            </div>
+
+                <div class="modal-body">
+                    <textarea style="OVERFLOW-Y: auto; color:#A6FFA6;  OVERFLOW-X:hidden;background-color: black;width:865px;height: 800px;" id='grains_data'>None</textarea>
+
+                </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script src="/static/assets/js/json.js"></script>
+
+<script>
+    function GetGrainsPillar(id,action) {
+        $('#grains').addClass('in').css('display','block');
+        $.getJSON("{% url 'SaltMinionGrains' %}",{minion:id,action:action},function (result) {
+            data=JSON.stringify(result);
+            var grainsvar = document.getElementById('grains_data');
+            grainsvar.value= formatJson(data,true);
+        })
+    }
+
+</script>
+
+
+
+
 {% endblock%}

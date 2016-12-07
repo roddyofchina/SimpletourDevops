@@ -142,7 +142,7 @@
                                                     <td>{{container.command|slice:"30"}}</td>
                                                     <td>{{container.Created|date:"Y-m-d H:i:s"}}</td>
                                                     <td>
-                                                        {% if 'Up' in container.status %}
+                                                        {% if container.status == 'running' %}
                                                             <button data-id="{{container.containerID}}" id="stop" data-type="stop" class="btn btn-xs btn-danger change">停止</button>
 
                                                         {% else %}
