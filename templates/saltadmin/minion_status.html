@@ -37,7 +37,7 @@
                                             <th>UP/Offline</th>
                                             <th>grains信息</th>
                                             <th>pillar信息</th>
-                                            <td>操作</td>
+
                                         </tr>
                                     </thead>
 
@@ -50,9 +50,7 @@
                                             <td>{{minion.minion_status}}</td>
                                             <td><button class="btn btn-xs btn-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="GetGrainsPillar({{minion.id}},'grains')" >view</button></td>
                                             <td><button class="btn btn-xs btn-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="GetGrainsPillar({{minion.id}},'pillar')" >view</button></td>
-                                            <td>
-                                                 <button  class="btn btn-xs btn-danger" >删除</button>
-                                             </td>
+
                                         </tr>
                                         {% endfor%}
                                     </tbody>

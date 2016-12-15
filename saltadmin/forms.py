@@ -23,15 +23,16 @@ class CheckSaltServer(forms.ModelForm):
                                widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'password', }))
 
 
-    def clean(self):
-        cleaned_data = sum(CheckSaltServer,self).clean()
-        value = cleaned_data.get('url')
-        try:
-            SaltServer.objects.get(url=value)
-            self._errors['url'] = self.error_class(["%s url 信息已存在" % value])
-        except SaltServer.DoesNotExist:
-            pass
-        return cleaned_data
+    # def clean(self):
+    #     cleaned_data = sum(CheckSaltServer,self).clean()
+    #     value = cleaned_data.get('url')
+    #     try:
+    #         SaltServer.objects.get(url=value)
+    #         self._errors['url'] = self.error_class(["%s url 信息已存在" % value])
+    #     except SaltServer.DoesNotExist:
+    #         pass
+    #     return cleaned_data
+
 
     class Meta:
         model = SaltServer

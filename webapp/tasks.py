@@ -20,7 +20,7 @@ from django.conf import settings
 
 from django.core import signals
 from django.db import close_old_connections
-from saltadmin.Minions_Controller import GetMinionConf
+from saltadmin.Minions_Controller import GetMinionConf,GetSaltJobs
 
 
 # 取消信号关联，实现数据库长连接
@@ -47,6 +47,10 @@ celery.conf.update(
         'minions': {
             'task': 'webapp.tasks.GetMinionStatus',
             'schedule': timedelta(seconds=30)
+        },
+        'getjob': {
+            'task': 'webapp.tasks.GetSaltjobs',
+            'schedule': timedelta(seconds=60)
         },
     }
 )
@@ -137,10 +141,16 @@ def GetMinionStatus():
     data = GetMinionConf()
     print data
 
+@celery.task()
+def GetSaltjobs():
+    print u"--------------------获取jobs----"
+    data  = GetSaltJobs()
+
+
 #更新资产
 @celery.task()
 def UpdateServerInfo(serverid):
-    salt = SaltApi()
+    salt = SaltApi('http://192.168.2.150:8000/','roddy','roudy_123456')
     serverdata = Server.objects.get(id=serverid)
     saltid=serverdata.saltid
     data=salt.grainsall(saltid)

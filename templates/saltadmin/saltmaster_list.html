@@ -53,7 +53,7 @@
                                             <td>{{salt.role}}</td>
                                              <td>
                                                  <button  data-toggle="modal" data-target="#con-update-modal" class="btn btn-xs btn-info">修改</button>
-                                                 <button  class="btn btn-xs btn-danger" >删除</button>
+                                                 <button  class="btn btn-xs btn-danger" onclick="DeleteMaster({{salt.id}})" >删除</button>
                                              </td>
                                         </tr>
                                         {% endfor%}
@@ -82,8 +82,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="field-3" class="control-label">URL</label>
-                            {{SaltServerForms.url}}
-
+                            {{form.url}}
+                            {{form.url.errors}}
                         </div>
                     </div>
                 </div>
@@ -92,14 +92,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="field-1" class="control-label">用户名</label>
-                                {{SaltServerForms.username}}
+                                {{form.username}}
+                                {{form.username.errors}}
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="field-2" class="control-label">密码</label>
-                               {{SaltServerForms.password}}
+                               {{form.password}}
+                                {{form.password.errors}}
                             </div>
                         </div>
                     </div>
@@ -108,7 +110,8 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="field-3" class="control-label">角色</label>
-                             {{SaltServerForms.role}}
+                             {{form.role}}
+                             {{form.role.errors}}
                         </div>
                     </div>
                 </div>
@@ -175,16 +178,30 @@
 
 
 <script>
-    function SaltMasterAdd() {
+    function DeleteMaster(e) {
+        var iddd = e;
         $.ajax({
-            url: '/',
+            url: '/salt/master/delete/' + iddd,
+            type: 'get',
+            dataType:'json',
+            success: function (data) {
+
+                $.Notification.autoHideNotify('success','top right','系统通知', data.msginfo);
+                setTimeout(function() {
+                                   location.href = '{% url 'SaltMasterList'  %}';
+                              },2500);
+
+            },
+            error: function () {
+
+            },
 
         })
-
     }
 
 
 </script>
+
 
 
 {% endblock%}

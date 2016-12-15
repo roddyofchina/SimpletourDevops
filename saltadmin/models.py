@@ -23,6 +23,8 @@ class SaltServer(models.Model):
 
 class Module(models.Model):
     name = models.CharField(max_length=20,verbose_name=u'Salt模块名称')
+    models_site = models.CharField(max_length=50,null=True,blank=True,verbose_name=u'Salt模块参数')
+
     def __unicode__(self):
         return "%s" % (self.name)
     class Meta:
@@ -97,6 +99,22 @@ class CmdRunLog(models.Model):
     class Meta:
         verbose_name = u'命令执行日志'
         verbose_name_plural = u'命令执行日志'
+
+
+class SaltJobs(models.Model):
+    jid = models.CharField(max_length=50,unique=True)
+    args = models.CharField(max_length=50,null=True,blank=True)
+    function = models.CharField(max_length=50)
+    startTime = models.CharField(max_length=100)
+    target = models.CharField(max_length=500)
+    user = models.CharField(max_length=50)
+    saltserver = models.CharField(max_length=100,null=True,blank=True)
+
+    class Meta:
+        verbose_name = u'Jobs列表'
+        verbose_name_plural = u'Jobs列表'
+
+
 
 class ModuleDeployLog(models.Model):
     user=models.CharField(max_length=50)

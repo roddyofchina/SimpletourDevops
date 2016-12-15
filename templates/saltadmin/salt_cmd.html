@@ -188,10 +188,9 @@
 
                     }else{
                         var newResult = result.split('\n');
-
                         for (var i=0;i<newResult.length; i++){
                             NewResult = newResult[i] + '</br>';
-                            results_html +=(NewResult);
+                            results_html +=(NewResult.replace(/\s+/g,"\t\t\t"));
                             //cmd_result.text= formatJson(data,true);
                         };
                         objresult.innerHTML += results_html;

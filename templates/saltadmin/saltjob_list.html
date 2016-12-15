@@ -10,7 +10,7 @@
                 <h4 class="page-title">SALT 管理</h4>
                 <ol class="breadcrumb">
                     <li>
-                        <a href="{% url 'JobList' %}">Job 管理</a>
+                        <a href="{% url 'JobList'  1 %}">Job 管理</a>
                     </li>
                     <li class="active">
                         SaltStack Jobs 列表
@@ -21,13 +21,11 @@
 
         <div class="row">
             <div class="col-sm-10">
-
                 <div class="card-box">
-
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="m-t-0 header-title"><b>Jobs 列表</b></h4>
-                            <div class="p-20">
+
                                 <table class="table table-striped m-0">
                                     <thead>
                                         <tr>
@@ -38,28 +36,73 @@
                                             <th>开始时间</th>
                                             <th>target</th>
                                             <th>用户</th>
+                                            <th>Master</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        {% for i in SaltMaster_data %}
                                         <tr>
-                                            <th scope="row"><a href="#"> 20161203012833711651</a></th>
-                                            <td></td>
-                                            <td>test.ping</td>
-                                            <td>2016, Dec 03 01:28:33.711651</td>
+                                            <th scope="row"><button class="btn btn-xs btn-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="GetJobDetail('{{i.jid}}')" >{{i.jid}}</button></th>
                                             <td>
-                                                192.168.2.147<br>
-                                                192.168.2.148<br>
+                                                {{i.args}}
                                             </td>
-                                            <td>root</td>
+                                            <td>{{i.function}}</td>
+                                            <td>{{i.startTime}}</td>
+                                            <td>
+                                                {{i.target}}
+                                            </td>
+                                            <td>{{i.user}}</td>
+                                            <td>{{i.saltserver}}</td>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
-                            </div>
+
+
+                                <nav>
+                                    <ul class="pagination" >
+                                        {{page}}
+                                    </ul>
+                                </nav>
+
+
+
+
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
+
+<div class="modal fade bs-example-modal-lg" id="jobDetail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" >Job信息</h4>
+            </div>
+
+                <div class="modal-body">
+                    <textarea style="OVERFLOW-Y: auto; color:#A6FFA6;  OVERFLOW-X:hidden;background-color: black;width:848px;height: 800px;" id='jobdata'>正在获取Job信息</textarea>
+
+                </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+    <script src="/static/assets/js/json.js"></script>
+
+<script>
+    function GetJobDetail(id) {
+        $('#jobDetail').addClass('in').css('display','block');
+        $.getJSON("{% url 'jobdetail' %}",{jid:id},function (result) {
+            data=JSON.stringify(result);
+            var jobvar = document.getElementById('jobdata');
+            jobvar.value= formatJson(data,true);
+        })
+    }
+</script>
+
 </div>
 {% endblock%}
