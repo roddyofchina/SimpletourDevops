@@ -106,6 +106,8 @@ DOCKER_CERT_PATH=/etc/docker
   ```
 
  启动访问
+
+###首页及docker
       
 ![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/login.png)
 ![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/system_admin.png)
@@ -114,7 +116,22 @@ DOCKER_CERT_PATH=/etc/docker
 ![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/docker_server.png)
 ![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/log.png)
 ![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/container_ssh.png)
+
+
+###saltstack
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/keys.png)
+
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/job.png)
+
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/cmd.png)
+
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/soft.png)
+
+
+###后台
 ![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/protal.png)
+
+
 
 
 
