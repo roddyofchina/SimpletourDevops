@@ -26,10 +26,31 @@ DOCKER_CERT_PATH=/etc/docker
   ```
 * 部署流程
 以下为部署流程
+ 修改 settings.py中db连接
+ ```
+ DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'SimpletourDevops',
+        'HOST': '192.168.2.232',
+        'USER': 'root',
+        'PORT': 3306,
+        'PASSWORD': 'redhat',
+        'OPTIONS': {
+            'init_command': 'SET storage_engine=INNODB',
+        },
+    }
+}
+ ```
+ 
+ 
  部署程序到/data
 
   ```
     [root@localhost ~]# mv /root/SimpletourDevops /data/
+    [root@localhost ~]# cd /data/SimpletourDevops
+    [root@localhost SimpletourDevops]#python manage.py  makemigrations
+    [root@localhost SimpletourDevops]#python manage.py  migrate
   ```
  复制supervisor配置
    ```
