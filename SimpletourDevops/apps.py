@@ -29,6 +29,12 @@ class SuitConfig(DjangoSuitConfig):
             ChildItem(model='dockermanager.dockerimage'),
         ], icon='fa fa-magnet'),
 
+        ParentItem(u'Salt管理', children=[
+            ChildItem(model='saltadmin.saltjobs'),
+            ChildItem(model='saltadmin.cmdrunlog'),
+            ChildItem(model='saltadmin.miniongroup'),
+        ], icon='fa fa-magnet'),
+
         ParentItem(u'用户管理', children=[
             ChildItem(u'用  户','webapp.suser'),
             ChildItem(u'用户组', 'auth.group'),

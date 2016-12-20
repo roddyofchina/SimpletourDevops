@@ -28,6 +28,7 @@ def SaltMasterList(request):
         else:
             form = form
     SaltMasterData = SaltServer.objects.all()
+    Role=SaltServer.Role
     return render(request, 'saltadmin/saltmaster_list.html', locals())
 
 
@@ -37,6 +38,34 @@ def SaltMasterDelete(request,masterid):
         SaltServer.objects.get(id=masterid).delete()
         msg = {'msginfo': u'Salt主机及所有管理信息已经删除成功!!'}
         return HttpResponse(json.dumps(msg))
+
+
+@login_required()
+def SalMasterChange(request,masterid):
+    if request.method == 'POST':
+        url = request.POST.get('url')
+        username  = request.POST.get('username')
+        password = request.POST.get('password')
+        role = request.POST.get('role')
+
+        Changeserver = SaltServer.objects.get(id=masterid)
+        Changeserver.url = url
+        Changeserver.username = username
+        Changeserver.password = password
+        Changeserver.role = role
+        Changeserver.save()
+        msg = {'msginfo': u'Master修改成功!!!!',}
+        return HttpResponse(json.dumps(msg))
+
+    else:
+        Changeserver = SaltServer.objects.get(id=masterid)
+        data = {'url': Changeserver.url,'username':Changeserver.username,'password':Changeserver.password,'role':Changeserver.role }
+        return HttpResponse(json.dumps(data))
+
+
+
+
+
 
 
 
@@ -73,12 +102,22 @@ def KeyList(request):
         return HttpResponse('OK')
 
 
+
+
+
+
 @login_required()
 def Minion_Status(request):
     usersession = request.session.get('user_id')
     if request.method == 'GET':
         SaltMinionData = MinionStatus.objects.filter(minion__status='Accepted')
         return render(request,'saltadmin/minion_status.html',locals())
+
+
+
+
+
+
 
 
 @login_required()
@@ -297,7 +336,6 @@ def DeployResult(request,jid):
         #logs.runsuccess=len(resultdata)
         #logs.save()
         #print yaml.load_all(resultdata)
-
 
         ret={'minion':minions_list,'resultdata':resultdata}
 

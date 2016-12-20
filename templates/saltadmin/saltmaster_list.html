@@ -52,7 +52,7 @@
                                             <td>{{salt.username}}</td>
                                             <td>{{salt.role}}</td>
                                              <td>
-                                                 <button  data-toggle="modal" data-target="#con-update-modal" class="btn btn-xs btn-info">修改</button>
+                                                 <button    onclick="ModifyHost({{salt.id}})" class="btn btn-xs btn-info">修改</button>
                                                  <button  class="btn btn-xs btn-danger" onclick="DeleteMaster({{salt.id}})" >删除</button>
                                              </td>
                                         </tr>
@@ -140,7 +140,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="field-3" class="control-label">URL</label>
-                            <input type="text" class="form-control" id="field-3" placeholder="http://127.0.0.1">
+                            <input type="text" class="form-control" id="url" value="" placeholder="http://127.0.0.1">
                         </div>
                     </div>
                 </div>
@@ -148,13 +148,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="field-1" class="control-label">用户名</label>
-                                <input type="text" class="form-control" id="field-1" placeholder="username">
+                                <input type="text" class="form-control" id="username" value="" placeholder="username">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="field-2" class="control-label">密码</label>
-                                <input type="password" class="form-control" id="field-2" placeholder="password">
+                                <input type="password" class="form-control" id="password" value="" placeholder="password">
                             </div>
                         </div>
                     </div>
@@ -162,16 +162,22 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="field-3" class="control-label">角色</label>
-                            <input type="text" class="form-control" id="field-3" placeholder="Master">
+
+                           <select class="form-control" id="role" name="role">
+                               {% for r in Role%}
+                                <option value="{{r.0}}" selected="selected">{{r.1}}</option>
+                               {% endfor %}
+                           </select>
                         </div>
                     </div>
                 </div>
-
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-info waves-effect ">添加</button>
+                <button type="button" class="btn btn-info waves-effect " id="update" data-aa="" onclick="postMaster()">修改</button>
             </div>
+
         </div>
     </div>
 </div><!-- /.modal -->
@@ -199,7 +205,54 @@
         })
     }
 
+    function postMaster(){
+        $.ajax({
+            url: '/salt/master/change/' + id,
+            type: 'POST',
+            dataType: 'json',
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                url: document.getElementById('url').value,
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                role: document.getElementById('role').value,
+            },
+            success: function (data) {
 
+                $('#con-update-modal').modal('hide');
+                  setTimeout(function() {
+                                   location.href = '{% url 'SaltMasterList'  %}';
+                              },2500);
+            },
+            error: function () {
+
+            }
+
+        })
+    }
+    // 全局id
+    var id = '';
+    function ModifyHost(e) {
+        $.ajax({
+            url: '/salt/master/change/' + e,
+            type: 'GET',
+            dataType:'json',
+            success: function (data) {
+                document.getElementById('url').value = data.url;
+                document.getElementById('username').value = data.username;
+                document.getElementById('password').value = data.password;
+                document.getElementById('role').value = data.role;
+                id = e;
+                $('#con-update-modal').modal('show');
+                
+            },
+            error: function () {
+                
+            }
+
+        })
+
+    }
 </script>
 
 

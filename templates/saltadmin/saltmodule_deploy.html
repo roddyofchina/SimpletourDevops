@@ -87,11 +87,18 @@
          <div class="col-sm-12">
             <p><b>实时结果输出:</b></p>
 		 </div>
-        <div class="col-md-12">
+        <div class="col-md-9">
             <div class="card-box" id="result" style="OVERFLOW-Y: auto;color: #00af00;  OVERFLOW-X:hidden;background-color: #1c1c1c;height: 600px">
 
             </div>
+        </div>
 
+          <div class="col-md-3">
+            <div class="card-box"  style="OVERFLOW-Y: auto;color: white;  OVERFLOW-X:hidden;background-color: #1c1c1c;height: 600px">
+                <p>结果输出:</p>
+                <div id="success" style="color: #00af00">
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -173,25 +180,46 @@
 
             success: function (data) {
                 var dataHtml = '';
+                var ResultHtml= '';
+
                 data.resultdata.forEach(function(resultdata) {
 
-                    dataHtml += '<br/><br/><br/>' + resultdata.url + ':<br/>';
+                    dataHtml += '<br/><br/>' + resultdata.url + ':<br/>';
+                    ResultHtml += '<br/>' + resultdata.url + ':<br/>';
+                    ResultHtml += new Array(50).join("-") + '</br>';
+                    ResultHtml += 'Succeeded:' + resultdata.success + '<br/>';
+                    ResultHtml += '<p style="color: red;">Failed:' + resultdata.error + '</p>';
+                    ResultHtml += new Array(50).join("-") + '</br>';
 
                     resultdata.result.forEach(function(result) {
 
                         dataHtml += new Array(100).join("-") + '</br>';
+
+                        if (result.Result== false){
+                            dataHtml += '<p style="color: red">'
+
+                        }
 
                         for(var k in result){
 
                             if(k === 'Changes') {
                                 dataHtml += k + ':\t' + JSON.stringify(result[k]) + '<br/>';
                             } else {
-                                dataHtml += k + ':\t' + result[k] + '<br/>'
+                                dataHtml += k + ':\t' + result[k] + '<br/>';
                             }
+
                         }
+
+                        if (result.Result== false){
+                            dataHtml += '</p>'
+
+                        }
+
                     });
                 });
                 $('#result').html(dataHtml);
+                $('#success').html(ResultHtml);
+
 
 //                dataResult.forEach(function(result) {
 //

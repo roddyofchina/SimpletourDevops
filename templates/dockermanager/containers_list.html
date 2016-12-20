@@ -126,7 +126,7 @@
 
                                             {% for container in Containerdata %}
                                                 <tr>
-                                                    <td><a href="{% url 'Dockercontainerlist' container.id %}">{{container.containerID | slice:"12"}}</a></td>
+                                                    <td>{{container.containerID | slice:"12"}}</td>
                                                     <td>{{container.Name|slice:"40"}}</td>
                                                     <td>{{container.hostip}}</td>
 

@@ -115,7 +115,9 @@ class SaltApi(object):
         '''
 
         params = {'client': 'runner', 'fun': 'jobs.lookup_jid', 'jid': jid}
+        print params
         content = self.PostRequest(params)
+        print content
         return content['return'][0]
 
 
@@ -173,7 +175,8 @@ if __name__ == '__main__':
     #host='192.168.2.147,192.168.2.148,'
     #data=salt.shell_remote_execution(host, 'df -i')
     #print data
-    data = salt.salt_runner(20161213234559101210)
+    data = salt.salt_runner(20161215192828817118)
+    print data
     format(data)
 
 
