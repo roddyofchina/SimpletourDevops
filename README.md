@@ -25,65 +25,66 @@ OPTIONS='--selinux-enabled -H 0.0.0.0:2375 -H unix:///var/run/docker.sock '
 DOCKER_CERT_PATH=/etc/docker
   ```
 * 部署流程
-1. 部署程序到/data
+以下为部署流程
+ 部署程序到/data
 
-```
-  [root@localhost ~]# mv /root/SimpletourDevops /data/
-```
-2. 复制supervisor配置
-```
-  [root@localhost SimpletourDevops]# cp supervisord.conf  /etc/
-  [root@localhost supervisord.d]# supervisord -c /etc/supervisord.conf     <--启动supervisor,如果启动用户非www，请自行修改
-```
-3. 修改配置文件
-```
-  在settings.py中添加STATIC_ROOT
-  STATIC_ROOT = '/data/SimpletourDevops/static/suit'
-  
-```
+  ```
+    [root@localhost ~]# mv /root/SimpletourDevops /data/
+  ```
+ 复制supervisor配置
+   ```
+     [root@localhost SimpletourDevops]# cp supervisord.conf  /etc/
+     [root@localhost supervisord.d]# supervisord -c /etc/supervisord.conf     <--启动supervisor,如果启动用户非www，请自行修改
+  ```
+ 修改配置文件
+  ```
+    在settings.py中添加STATIC_ROOT
+    STATIC_ROOT = '/data/SimpletourDevops/static/suit'
 
-```
-python manage.py collectstatic  <--生成静态文件
-```
-4.配置nginx
-```
-server {
-    listen       80;
-    server_name  localhost;
-    access_log  /var/log/nginx/devops.simpletour.com.access.log  main;
-    error_log  /var/log/nginx/devops.simpletour.com.error.log error;
+  ```
 
-    location / {            
-            include  uwsgi_params;
-            uwsgi_pass  127.0.0.1:8098;              
-            uwsgi_read_timeout 600;
-            uwsgi_connect_timeout 60;
-            uwsgi_send_timeout 600;
-            client_max_body_size 35m;
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
-            uwsgi_ignore_client_abort on;
-        }
-        location ^~ /docker/getSocket{
-            proxy_pass http://127.0.0.1:8099;
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
-            proxy_set_header Host $host;    
-            uwsgi_ignore_client_abort on;
-        }
+  ```
+  python manage.py collectstatic  <--生成静态文件
+  ```
+ 配置nginx
+  ```
+  server {
+      listen       80;
+      server_name  localhost;
+      access_log  /var/log/nginx/devops.simpletour.com.access.log  main;
+      error_log  /var/log/nginx/devops.simpletour.com.error.log error;
 
-        location /static {
-            alias /data/SimpletourDevops/static/suit;    
-        }
+      location / {            
+              include  uwsgi_params;
+              uwsgi_pass  127.0.0.1:8098;              
+              uwsgi_read_timeout 600;
+              uwsgi_connect_timeout 60;
+              uwsgi_send_timeout 600;
+              client_max_body_size 35m;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection "upgrade";
+              uwsgi_ignore_client_abort on;
+          }
+          location ^~ /docker/getSocket{
+              proxy_pass http://127.0.0.1:8099;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection "upgrade";
+              proxy_set_header Host $host;    
+              uwsgi_ignore_client_abort on;
+          }
 
-}
+          location /static {
+              alias /data/SimpletourDevops/static/suit;    
+          }
+
+  }
 
 
-```
+  ```
 
-5. 启动访问
+ 启动访问
       
 ![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/login.png)
 ![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/system_admin.png)
