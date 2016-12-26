@@ -12,6 +12,7 @@ from saltadmin.forms import CheckSaltServer,KeyManager
 from webapp.Extends import PageList
 import yaml
 from saltadmin.Minions_Controller import JobResultFromat
+from webapp.models import Operation
 
 
 
@@ -34,14 +35,17 @@ def SaltMasterList(request):
 
 @login_required()
 def SaltMasterDelete(request,masterid):
+    user_name = request.session.get('user_name')
     if request.method == 'GET':
         SaltServer.objects.get(id=masterid).delete()
+        Operation.objects.create(Opuser=user_name, Opaction=u'删除salt主机')
         msg = {'msginfo': u'Salt主机及所有管理信息已经删除成功!!'}
         return HttpResponse(json.dumps(msg))
 
 
 @login_required()
 def SalMasterChange(request,masterid):
+    user_name = request.session.get('user_name')
     if request.method == 'POST':
         url = request.POST.get('url')
         username  = request.POST.get('username')
@@ -54,6 +58,7 @@ def SalMasterChange(request,masterid):
         Changeserver.password = password
         Changeserver.role = role
         Changeserver.save()
+        Operation.objects.create(Opuser=user_name, Opaction=u'修改salt主机信息')
         msg = {'msginfo': u'Master修改成功!!!!',}
         return HttpResponse(json.dumps(msg))
 
@@ -72,6 +77,7 @@ def SalMasterChange(request,masterid):
 @login_required()
 def KeyList(request):
     usersession = request.session.get('user_id')
+    user_name = request.session.get('user_name')
     if request.method == 'GET':
         Accepted = Minions.objects.filter(status='Accepted')
         Unaccepted = Minions.objects.filter(status='Unaccepted')
@@ -86,6 +92,7 @@ def KeyList(request):
         Minion_data=Minions.objects.get(minion=minion)
         Minion_data.status = status
         Minion_data.save()
+        Operation.objects.create(Opuser=user_name, Opaction=u'修改 minion Key状态 %s to %s' %(Minion_data.minion,status))
         url = Minion_data.saltserver.url
 
         username = Minion_data.saltserver.username
@@ -123,8 +130,9 @@ def Minion_Status(request):
 @login_required()
 def SoftInstall(request):
     usersession = request.session.get('user_id')
+    user_name = request.session.get('user_name')
     if request.method == 'GET':
-        SoftModuleData = Module.objects.all()
+        SoftModuleData = Modules.objects.all()
         GroupData = MinionGroup.objects.all()
         # hosts = """[ {type: 1, list: [{ text: 'yang', id: 1}, {text: 'asdasd',id: 4}]}, }]"""
 
@@ -144,6 +152,7 @@ def SoftInstall(request):
         groupall = json.dumps(groupall)
 
         return render(request,'saltadmin/saltmodule_deploy.html',locals())
+
     else:
         if not request.POST.get('minion'):
             minions_id = request.POST.get('minion_group')
@@ -175,7 +184,7 @@ def SoftInstall(request):
 
         jid = salt.Softwarete_deploy(minions_list,arg=["saltenv=%s" %(salt_env), str(soft), 'test=True'])
 
-
+        Operation.objects.create(Opuser=user_name, Opaction=u'部署软件 %s' %soft)
         #savelog = CmdRunLog.objects.create(user=user_name, target=minions_list, cmd=cmd, total=len(minions_list.split(',')))
 
         ret={'jid':jid,'minion':minions_list,'savelogid':1}
@@ -232,6 +241,7 @@ def jobdetail(request):
 def RemoteCmd(request):
     usersession = request.session.get('user_id')
     user_name = request.session.get('user_name')
+
     if request.method == 'GET':
         GroupData = MinionGroup.objects.all()
         #hosts = """[ {type: 1, list: [{ text: 'yang', id: 1}, {text: 'asdasd',id: 4}]}, }]"""
@@ -276,6 +286,7 @@ def RemoteCmd(request):
 
         salt = SaltApi(url, username, password)
         jid = salt.shell_remote_execution(minions_list, cmd)
+        Operation.objects.create(Opuser=user_name, Opaction=u'执行命令 %s' %cmd)
 
         savelog = CmdRunLog.objects.create(user=user_name, target=minions_list, cmd=cmd, total=len(minions_list.split(',')))
 

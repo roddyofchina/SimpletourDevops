@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'servermanager',
     'dockermanager',
     'saltadmin',
+    'domainmanager',
     'import_export',
 ]
 
@@ -158,5 +159,4 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = '923401910@qq.com'
 EMAIL_HOST_PASSWORD = 'utzvxwccfxhkbcdc'
 DEFAULT_FROM_EMAIL = '923401910@qq.com'
-
 SESSION_COOKIE_AGE = 60*180

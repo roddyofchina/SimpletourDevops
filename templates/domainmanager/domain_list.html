@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container">
+   <!-- Page-Title -->
+    <div class="row ">
+      <div class="col-sm-12">
+                <h4 class="page-title">域名列表</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">域名管理</a>
+                    </li>
+                    <li class="active">
+                        <a href="{% url 'SimpletourDomainLists'  %}">域名列表</a>
+                    </li>
+                </ol>
+            </div>
+      <div class="col-sm-10">
+            <div class="card-box">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4 class="m-t-0 header-title"><b>域名列表</b></h4>
+                        <p class="text-muted font-13">
+                            以下域名列表信息是通过Dnspod api 获取
+                        </p>
+
+                        <div class="p-20">
+                            <div class="table-responsive">
+                                <table class="table m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>域名ID</th>
+                                            <th>域名</th>
+                                            <th>状态</th>
+                                            <th>拥有者</th>
+
+                                            <th>解析记录</th>
+                                            <th>ttl</th>
+                                            <th>创建时间</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="tableid">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+      </div>
+    </div>
+</div>
+
+<script src="/static/assets/js/spin.js"></script>
+
+<script>
+    var opts = {
+              lines: 11 // The number of lines to draw
+            , length: 2 // The length of each line
+            , width: 5 // The line thickness
+            , radius: 25 // The radius of the inner circle
+            , scale: 1 // Scales overall size of the spinner
+            , corners: 1 // Corner roundness (0..1)
+            , color: '#000' // #rgb or #rrggbb or array of colors
+            , opacity: 0.1 // Opacity of the lines
+            , rotate: 0 // The rotation offset
+            , direction: 1 // 1: clockwise, -1: counterclockwise
+            , speed: 1 // Rounds per second
+            , trail: 34 // Afterglow percentage
+            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+            , zIndex: 2e9 // The z-index (defaults to 2000000000)
+            , className: 'spinner' // The CSS class to assign to the spinner
+            , top: '48%' // Top position relative to parent
+            , left: '51%' // Left position relative to parent
+            , shadow: true // Whether to render a shadow
+            , hwaccel: false // Whether to use hardware acceleration
+            , position: 'absolute' // Element positioning
+            };
+
+        var spinner = new Spinner(opts);
+
+
+    $(function () {
+        var target = document.getElementById('tableid');
+        var spinner = new Spinner(opts).spin(target);
+        $.ajax({
+            dataType:'json',
+            method: 'get',
+            url: '/domain/dnspodapi/',
+
+
+            success: function (data) {
+                var tableHtml = '';
+                data.list_domain.forEach(function(domain) {
+                     tableHtml += '<tr>' +
+                        '<th scope="row">'+ domain.id +'</th>' +
+                        '<td>'+ domain.name +'</td>' +
+                        '<td>'+ domain.status + '</td>' +
+                        '<td>'+ domain.owner+'</td>' +
+                        '<td><a href="/domain/record/search/'+ domain.id  + '">' + domain.records+'</a></td>' +
+                        '<td>'+ domain.ttl+'</td>' +
+                        '<td>'+ domain.created_on+'</td>' +
+                    '</tr>';
+                })
+                $('tbody').append(tableHtml);
+                spinner.stop();
+
+            },
+            error: function (data) {
+                alert(data.responseText);
+                spinner.stop();
+
+            },
+            complete: function() {
+
+            }
+        })
+
+
+
+
+    })
+
+
+
+
+</script>
+{% endblock %}
+

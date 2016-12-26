@@ -33,6 +33,7 @@ class SuitConfig(DjangoSuitConfig):
             ChildItem(model='saltadmin.saltjobs'),
             ChildItem(model='saltadmin.cmdrunlog'),
             ChildItem(model='saltadmin.miniongroup'),
+            ChildItem(model='saltadmin.modules'),
         ], icon='fa fa-magnet'),
 
         ParentItem(u'用户管理', children=[

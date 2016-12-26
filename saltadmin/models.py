@@ -19,18 +19,22 @@ class SaltServer(models.Model):
     class Meta:
         verbose_name = u'Salt服务器'
         verbose_name_plural = u'Salt服务器列表'
+        permissions = (
+            ("salt_index_view", "Can view %s"  % verbose_name),
+        )
 
 
-class Module(models.Model):
+class Modules(models.Model):
     name = models.CharField(max_length=20,verbose_name=u'Salt模块名称')
     models_site = models.CharField(max_length=50,null=True,blank=True,verbose_name=u'Salt模块参数')
 
     def __unicode__(self):
-        return "%s" % (self.name)
+        return self.name
+
     class Meta:
-        verbose_name = u'Salt模块'
-        verbose_name_plural = u'Salt模块列表'
-        unique_together = ("name",)
+        verbose_name = u'Salt软件'
+        verbose_name_plural = u'Salt软件'
+
 
 '''
 class Command(models.Model):

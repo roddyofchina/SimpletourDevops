@@ -35,7 +35,7 @@
   <div class="topbar">
     <!-- LOGO -->
     <div class="topbar-left">
-      <div class="text-center"> <a href="index.html" class="logo"><i class="icon-magnet icon-c-logo"></i><span>Simpletour运维系统</span></a> </div>
+      <div class="text-center"> <a href="/" class="logo"><i class="icon-magnet icon-c-logo"></i><span>Simpletour运维系统</span></a> </div>
     </div>
     <!-- Button mobile view to collapse sidebar menu -->
     <div class="navbar navbar-default" role="navigation">
@@ -91,6 +91,8 @@
           </li>
             {%endif%}
 
+          {%if perms.saltadmin.salt_index_view%}
+
           <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-pencil-alt"></i><span> SALT管理 </span></a>
             <ul class="list-unstyled">
               <li><a href="{% url 'SaltMasterList' %}">Master管理</a></li>
@@ -101,15 +103,26 @@
               <li><a href="{% url 'RemoteCmd' %}">批量执行</a></li>
             </ul>
           </li>
-      <!--
+          {%endif%}
+        <!--
           <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu-alt"></i><span> 域名管理 </span></a>
             <ul class="list-unstyled">
-              <li><a href="#">批量命令执行</a></li>
-              <li><a href="#">批量文件分发</a></li>
+              <li><a href="{% url 'SimpletourDomainLists' %}">域名列表</a></li>
+              <li><a href="#">域名解析</a></li>
+              <li><a href="#">变更记录</a></li>
             </ul>
-          </li>
-          -->
-          <li > <a href="/admin" class="waves-effect"><i class="ti-image"></i><span> 系统后台 </span></a>
+          </li>-->
+
+          <!--
+          <li class="has_sub"> <a href="#" class="waves-effect"><i class=" ti-reload"></i><span> 代码发布 </span></a>
+            <ul class="list-unstyled">
+              <li><a href="#">增量发布</a></li>
+              <li><a href="#">全量发布</a></li>
+              <li><a href="#">发布记录</a></li>
+            </ul>
+          </li>-->
+
+          <li > <a href="/admin" class="waves-effect"><i class=" ti-desktop"></i><span> 系统后台 </span></a>
         </ul>
         <div class="clearfix"></div>
       </div>
