@@ -17,6 +17,7 @@ from dockermanager.models import *
 import json
 
 
+
 @login_required
 def index(request):
     priceData = Assets.objects.all().aggregate(Sum('price'))
@@ -32,6 +33,7 @@ def index(request):
     UserData = Suser.objects.get(id=usersession)
     Opdata = Operation.objects.all().order_by('-id')[:10]
     return render(request,'webapp/index.html',locals())
+
 
 #用户登录函数
 def Login(request):

@@ -93,16 +93,16 @@
 
           {%if perms.saltadmin.salt_index_view%}
 
-          <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-pencil-alt"></i><span> SALT管理 </span></a>
-            <ul class="list-unstyled">
-              <li><a href="{% url 'SaltMasterList' %}">Master管理</a></li>
-              <li><a href="{% url 'KeyList' %}">keys管理</a></li>
-              <li><a href="{% url 'Minion_Status' %}">minion状态</a></li>
-              <li><a href="{% url 'SoftInstall' %}">软件部署</a></li>
-              <li><a href="{% url 'JobList' 1 %}">Job管理</a></li>
-              <li><a href="{% url 'RemoteCmd' %}">批量执行</a></li>
-            </ul>
-          </li>
+            <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-pencil-alt"></i><span> SALT管理 </span></a>
+              <ul class="list-unstyled">
+                <li><a href="{% url 'SaltMasterList' %}">Master管理</a></li>
+                <li><a href="{% url 'KeyList' %}">keys管理</a></li>
+                <li><a href="{% url 'Minion_Status' %}">minion状态</a></li>
+                <li><a href="{% url 'SoftInstall' %}">软件部署</a></li>
+                <li><a href="{% url 'JobList' 1 %}">Job管理</a></li>
+                <li><a href="{% url 'RemoteCmd' %}">批量执行</a></li>
+              </ul>
+            </li>
           {%endif%}
         <!--
           <li class="has_sub"> <a href="#" class="waves-effect"><i class="ti-menu-alt"></i><span> 域名管理 </span></a>

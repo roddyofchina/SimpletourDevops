@@ -5,5 +5,6 @@
     <orderEntry type="jdk" jdkName="Python 2.7.6 (C:\Python27\python.exe)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="docker_module" />
+    <orderEntry type="module" module-name="zxpython" />
   </component>
 </module>

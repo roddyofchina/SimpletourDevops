@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/SimpletourDevops.iml" filepath="$PROJECT_DIR$/.idea/SimpletourDevops.iml" />
       <module fileurl="file://D:/简途运维平台/docker_module/.idea/docker_module.iml" filepath="D:/简途运维平台/docker_module/.idea/docker_module.iml" />
+      <module fileurl="file://D:/zxpython/.idea/zxpython.iml" filepath="D:/zxpython/.idea/zxpython.iml" />
     </modules>
   </component>
 </project>

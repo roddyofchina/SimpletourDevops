@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'servermanager',
     'dockermanager',
     'saltadmin',
-    'domainmanager',
+    #'domainmanager',
     'import_export',
 ]
 
