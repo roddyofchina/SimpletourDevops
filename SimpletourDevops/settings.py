@@ -28,7 +28,7 @@ SECRET_KEY = '7yk*v@pp1dxi+9fdg-=_3_&!hh4=4tiukajl1^-m$(_2q=gw=9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['192.168.4.223',]
+ALLOWED_HOSTS = []
 
 
 
