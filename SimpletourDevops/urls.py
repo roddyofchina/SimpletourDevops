@@ -25,6 +25,6 @@ urlpatterns = [
     url(r'^web/', include('webapp.urls')),
     url(r'^docker/',include('dockermanager.urls')),
     url(r'^server/',include('servermanager.urls')),
-    url(r'^domain/', include('domainmanager.urls')),
+   # url(r'^domain/', include('domainmanager.urls')),
     url(r'^salt/',include('saltadmin.urls')),
 ]
