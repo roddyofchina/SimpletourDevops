@@ -18,11 +18,11 @@ v1.0：完成资产信息录入及使用saltstack自动采集更新
   ```
      [root@localhost ~]# vim /etc/sysconfig/docker
 
-# /etc/sysconfig/docker
+     # /etc/sysconfig/docker
 
-# Modify these options if you want to change the way the docker daemon runs
-OPTIONS='--selinux-enabled -H 0.0.0.0:2375 -H unix:///var/run/docker.sock '
-DOCKER_CERT_PATH=/etc/docker
+     # Modify these options if you want to change the way the docker daemon runs
+     OPTIONS='--selinux-enabled -H 0.0.0.0:2375 -H unix:///var/run/docker.sock '
+     DOCKER_CERT_PATH=/etc/docker
   ```
 * 部署流程
 以下为部署流程
@@ -68,7 +68,7 @@ DOCKER_CERT_PATH=/etc/docker
   python manage.py collectstatic  <--生成静态文件
   ```
  配置nginx
-  ```
+ ```
   server {
       listen       80;
       server_name  localhost;
@@ -101,13 +101,11 @@ DOCKER_CERT_PATH=/etc/docker
           }
 
   }
-  ```
+  
   
 
-
-
-
-
+```
+  
 
 
 
