@@ -109,13 +109,13 @@ DOCKER_CERT_PATH=/etc/docker
 
 ### 首页及docker
       
-![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/login.png)
-![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/system_admin.png)
-![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/server.png)
-![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/docker.png)
-![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/docker_server.png)
-![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/log.png)
-![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/container_ssh.png)
+![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/login.png)
+![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/system_admin.png)
+![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/server.png)
+![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/docker.png)
+![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/docker_server.png)
+![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/log.png)
+![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/container_ssh.png)
 
 
 ### saltstack
