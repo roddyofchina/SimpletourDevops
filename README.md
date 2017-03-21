@@ -1,6 +1,6 @@
 # SimpletourDevops
 django+python+celery+saltstack+docker实现的运维管理后台
-
+作者QQ：923401910
 v1.0：完成资产信息录入及使用saltstack自动采集更新
       完成单机版docker主机的基本管理，日志实时刷新
 ##部署步骤
@@ -113,13 +113,13 @@ v1.0：完成资产信息录入及使用saltstack自动采集更新
 
 ### 首页及docker
       
-![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/login.png)
-![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/system_admin.png)
-![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/server.png)
-![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/docker.png)
-![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/docker_server.png)
-![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/log.png)
-![image](github.com/roddyofchina/SimpletourDevops/blob/master/images/container_ssh.png)
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/login.png)
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/system_admin.png)
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/server.png)
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/docker.png)
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/docker_server.png)
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/log.png)
+![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/container_ssh.png)
 
 
 ### saltstack
