@@ -101,11 +101,17 @@ DOCKER_CERT_PATH=/etc/docker
           }
 
   }
-
-
   ```
+  
 
- 启动访问
+
+
+
+
+
+
+
+启动访问
 
 ### 首页及docker
       
@@ -131,8 +137,3 @@ DOCKER_CERT_PATH=/etc/docker
 ### 后台
 
 ![image](https://github.com/roddyofchina/SimpletourDevops/blob/master/images/protal.png)
-
-
-
-
-
